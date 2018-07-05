@@ -1,0 +1,121 @@
+<html>
+<head>
+<b>Font properties</b>
+<title>
+font size and color vary
+</title>
+</head>
+</br>
+</br>
+</br>
+
+<body>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous">
+</script>
+
+<script>
+function change_color(){
+  document.getElementById("statement").style.color = document.getElementById("colbox").value;
+}
+
+function change_bg_color(){
+  document.bgColor= document.getElementById("bgcol").value;
+
+}
+
+function change_size(){
+document.getElementById("statement").style.fontSize= document.getElementById("sizebox").value;
+
+}
+function inc_size(){
+  var  x= (document.getElementById("statement").style.fontSize);
+  x= x.substring(0,x.length-2);
+  x=Number(x)+1;
+  x=x+"px";
+  document.getElementById("statement").style.fontSize = x;
+}
+
+function dec_size(){
+  var  x= (document.getElementById("statement").style.fontSize);
+  x= x.substring(0,x.length-2);
+  x=Number(x)-1;
+  x=x+"px";
+  document.getElementById("statement").style.fontSize = x;
+}
+
+function italic(){
+  var target = document.getElementById("statement");
+     if( target.style.fontStyle == "italic" ) {
+         target.style.fontStyle = "normal";
+     } else {
+         target.style.fontStyle = "italic";
+     }
+}
+
+function bold(){
+  var target= document.getElementById("statement");
+  if(target.style.fontWeight=='bolder'){
+     target.style.fontWeight="normal";
+  } else{
+    target.style.fontWeight="bolder";
+  }
+}
+
+function underline(){
+  var target = document.getElementById("statement");
+    if( target.style.textDecoration == "underline" ) {
+        target.style.textDecoration = "none";
+    } else {
+        target.style.textDecoration = "underline";
+    }
+}
+
+
+
+
+</script>
+
+<div id="statement"> In ruling that the Lieutenant Governor of Delhi has no independent decision-making
+power, and has to act mainly on the aid and advice of the Council of Ministers,
+the Supreme Court has restored the primary role played by the “representative
+government” in the National Capital Territory.
+</div>
+<br/>
+
+
+<b>Enter the color code to change the color of text:</b>
+<input type="text" id="colbox" value='' />
+<button onclick="change_color()"> click me! </button>
+<br/>
+</br>
+
+<b>Enter the color code to change the background color:</b>
+<input type="text" id="bgcol" value='' />
+<button onclick="change_bg_color()"> click me! </button>
+</br>
+</br>
+
+<b>Enter the size:</b>
+<input type="text" id="sizebox" value='' />
+<button onclick="change_size()"> click me! </button>
+<button onclick= "inc_size()"> increase font size</button>
+<button onclick= "dec_size()"> decrease font size</button>
+</br>
+</br>
+
+<b>Click the following buttons to change the font style:</b>
+</br>
+
+<button onclick= "italic()"> Italic</button>
+<button onclick= "bold()"> bold</button>
+<button onclick= "underline()"> underline</button>
+
+
+
+
+</body>
+</html>
