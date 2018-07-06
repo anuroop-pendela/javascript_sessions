@@ -1,0 +1,24 @@
+<html>
+  <title> Paragraph Editor </title>
+  <body>
+    <label> Enter the text here :</label>
+    <input id="text-box" type="text">
+    <button onclick="appendText()" >submit</button>
+    <p id="one">
+      Hello this the short paragraph.
+    </p>
+  </body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+  function appendText()
+  {
+////    document.getElementsByTagName('p').innerHTML="Blah! blah!";
+//$('p').append('<span id="add_here"> new-dynamic-text </span>');
+   var value= $("#text-box").val();
+   $("#one").append(value);
+   $("#text-box").val("");
+  }
+  
+</script>

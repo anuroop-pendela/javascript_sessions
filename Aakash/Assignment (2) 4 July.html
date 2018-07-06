@@ -1,0 +1,80 @@
+<html>
+<title>Calculator</title>
+  <body>
+    <input id="screen" type="text">
+     <input id="ans" type="text">
+    <div>
+      <button onclick="operate(1)">1</button>
+      <button onclick="operate(2)">2</button>
+      <button onclick="operate(3)">3</button>
+      <button onclick="operate('+')">+</button>
+    </div>
+    <div>
+      <button onclick="operate(4)">4</button>
+      <button onclick="operate(5)">5</button>
+      <button onclick="operate(6)">6</button>
+      <button onclick="operate('-')">-</button>
+    </div>
+    <div>
+      <button onclick="operate(7)">7</button>
+      <button onclick="operate(8)">8</button>
+      <button onclick="operate(9)">9</button>
+        <button onclick="operate('*')">x</button>
+    </div>
+    <div>
+      <button onclick="operate(0)">0</button>
+      <button onclick="operate('=')">=</button>
+        <button onclick="operate('/')">/</button>
+    </div>
+
+  </body>
+</html>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+  var result=0;
+  var string="";
+  var op='+';
+  var curr=0;
+  var operate=function(x)
+  {
+    string+=x;
+
+    if(x=='=')
+    {
+      result=operator(op,curr,result);
+      $("#ans").val(result);
+      string=result;
+      curr=0;
+      op='+'
+      return;
+    }
+
+    if (x>=0 && x<=9)
+      {
+        $("#screen").val(string);
+        curr=curr*10+parseInt(x);
+
+      }
+      else
+      {
+        result=operator(op,curr,result);
+        curr=0;
+        $("#ans").val(result);
+        op=x;
+        $("#screen").val(string);
+      }
+  }
+  var operator= function(parameter,number,res)
+  {
+    if(parameter=='+')
+    return parseInt(number)+res;
+    else if(parameter=='*')
+    return parseInt(number)*res;
+    else if(parameter=='/')
+    return res/parseInt(number);
+    else
+    return res-parseInt(number);
+  }
+</script>

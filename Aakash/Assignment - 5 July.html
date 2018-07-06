@@ -1,0 +1,61 @@
+<html>
+  <title> jquery and CSS</title>
+  <style>
+    .modify
+    {
+      font-size: 30px;
+      color: rgb(12,255,29);
+    }
+  </style>
+  <body>
+    <label>font-size</label>
+    <input id="font_size" type="number" />
+    <button id="size_button"> submit </button>
+    </br>
+  </br>
+    <label>font-color</label>
+    <input id="font_color" type="text" />
+    <button id="color_button"> submit  </button>
+    <p class="modify" id="para1"> Use the above text boxes to change my font </p>
+  </body>
+</html>
+
+<!-- Importing jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<script>
+    $("#size_button").on("click",function()
+    {
+      var size= $("#font_size").val()+"px";
+      $("#para1").css("font-size",size);
+
+    });
+
+    $("#color_button").on("click",function()
+    {
+      var check="0123456789abcdefABCDEF";
+      var color_string=$("#font_color").val();
+      console.log(color_string);
+      if(color_string.length==6)
+    {
+      for(var i=0;i<6;i++)
+      {
+        var x=check.search(color_string[i]);
+        if(x==-1)
+        {
+          alert("Please enter a valid hexadecimal code");
+          return;
+        }
+      }
+      color_string="#"+color_string;
+      $("#para1").css("color",color_string)
+    }
+    else {
+      alert("Enter correct hexadecimal code");
+    }
+
+
+    });
+
+
+</script>
