@@ -1,0 +1,454 @@
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+<html>
+
+<body>
+  <h2>Bar chart:</h2>
+  <div id="add-visual">
+  </div>
+
+  <h2>Line chart:</h2>
+  <div id='line-chart'>
+
+  </div>
+
+  <h2>Pie chart:</h2>
+  <div id='pie-chart'>
+
+  </div>
+
+  <h2>Donut chart:</h2>
+  <div id='donut-chart'>
+
+  </div>
+</body>
+
+</html>
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+/* Ligraph style */
+  .line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+  .dots {
+    fill: steelblue;
+  }
+/* ---------------------------- */
+
+/* Barchart syles */
+  .bar {
+    fill: steelblue;
+  }
+
+
+  .axis--x path {
+    display: none;
+  }
+
+  #add-visual,#line-chart, #pie-chart, #donut-chart {
+    border-style: groove;
+    width: 1000px;
+    height: 600px;
+  }
+
+  .toolTip {
+    pointer-events: none;
+    position: absolute;
+    display: none;
+    min-width: 50px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    padding: 9px 14px 13px 14px;
+    border-radius: 4px;
+    text-align: left;
+    line-height: 1.3;
+    color: #5B6770;
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+  }
+
+  .toolTip:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 12px solid white;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    margin-left: -12px;
+  }
+
+  .toolTip span {
+    font-weight: 500;
+    color: #081F2C;
+  }
+/* ------------------------ */
+  /* Pie chart stlyes */
+
+  .pie-text {
+  font: 20px;
+  text-anchor: middle;
+
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+
+</style>
+<script>
+  var data = [{
+    "x": "2014-06-17",
+    "y": 100
+  }, {
+    "x": "2014-06-08",
+    "y": 200
+  }, {
+    "x": "2014-06-04",
+    "y": 150
+  }, {
+    "x": "2014-06-10",
+    "y": 320
+  }, {
+    "x": "2014-06-26",
+    "y": 250
+  }, {
+    "x": "2014-06-22",
+    "y": 180
+  }, {
+    "x": "2014-06-12",
+    "y": 290
+  }, {
+    "x": "2014-06-24",
+    "y": 222
+  }, {
+    "x": "2014-06-15",
+    "y": 135.5
+  }, {
+    "x": "2014-06-09",
+    "y": 240
+  }, {
+    "x": "2014-06-25",
+    "y": 189
+  }, {
+    "x": "2014-06-23",
+    "y": 290
+  }, {
+    "x": "2014-06-19",
+    "y": 254
+  }, {
+    "x": "2014-06-05",
+    "y": 298
+  }, {
+    "x": "2014-06-16",
+    "y": 195
+  }, {
+    "x": "2014-06-03",
+    "y": 231
+  }, {
+    "x": "2014-06-29",
+    "y": 320
+  }, {
+    "x": "2014-06-18",
+    "y": 349
+  }, {
+    "x": "2014-06-01",
+    "y": 299
+  }, {
+    "x": "2014-06-11",
+    "y": 199
+  }];
+
+
+  data = _.sortBy(data, "x")
+
+  var svg = d3.select("#add-visual").append("svg").attr("width", 1000).attr("height", 600),
+    margin = {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 40
+    },
+    width = 1000 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+  var strictIsoParse = d3.utcParse("%Y-%m-%d");
+
+
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
+    y = d3.scaleLinear().rangeRound([height, 0]);
+
+  var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+  x.domain(data.map(function(d) {
+    return strictIsoParse(d.x);
+  }));
+  y.domain([0, d3.max(data, function(d) {
+    return d.y;
+  })]);
+
+  g.append("g")
+    .attr("class", "axis axis--x")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
+
+  g.append("g")
+    .attr("class", "axis axis--y")
+    .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
+
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+    .attr("class", "bar")
+    .attr("y", height)
+    .attr("width", x.bandwidth())
+    .attr("x", function(d) {
+      return x(strictIsoParse(d.x));
+    })
+    .on("mousemove", function(d) {
+      tooltip
+        .style("left", d3.event.pageX + 20 + "px")
+        .style("top", d3.event.pageY - 10 + "px")
+        .style("display", "inline-block")
+        .html("<b>Value:" + d.y + "</b><br />on date:" + d.x);
+
+    })
+    .on("mouseout", function(d, i) {
+      tooltip.style("display", "none");
+    })
+    .transition() // apply a transition
+    .ease(d3.easeSin) // control the speed of the transition
+    .duration(1000)
+    .attr("y", function(d) {
+      return y(d.y);
+    })
+    .attr("height", function(d) {
+      return height - y(d.y);
+    });
+</script>
+
+<script>
+  // set the dimensions and margins of the graph
+  var margin = {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 50
+    },
+    width = 1000 - margin.left - margin.right,
+    height = 600 - margin.top - margin.bottom;
+
+  // parse the date / time
+  var parseTime = d3.timeParse("%d-%b-%y");
+
+  // set the ranges
+  var x = d3.scaleTime().range([0, width]);
+  var y = d3.scaleLinear().range([height, 0]);
+
+  // define the line
+  var valueline = d3.line()
+    .x(function(d) {
+      return x(d.date);
+    })
+    .y(function(d) {
+      return y(d.close);
+    });
+
+  // append the svg obgect to the body of the page
+  // appends a 'group' element to 'svg'
+  // moves the 'group' element to the top left margin
+  var svg = d3.select("#line-chart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+      "translate(" + margin.left + "," + margin.top + ")");
+
+  // Get the data
+  d3.csv("data.csv", function(error, data) {
+    if (error) throw error;
+
+    // format the data
+    data.forEach(function(d) {
+      d.date = parseTime(d.date);
+      d.close = +d.close;
+    });
+
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) {
+      return d.date;
+    }));
+    y.domain([0, d3.max(data, function(d) {
+      return d.close;
+    })]);
+
+    // Add the valueline path.
+    svg.append("path")
+      .data([data])
+      .attr("class", "line")
+      .attr("d", valueline);
+
+    // Add the X Axis
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add the Y Axis
+    svg.append("g")
+      .call(d3.axisLeft(y));
+
+      svg.selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("r","5px")
+          .attr("class","dots")
+          .attr("cx",function(d){return x(d.date)})
+          .attr("cy",function(d){return y(d.close)})
+          .on("mousemove", function(d) {
+            d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","10px")
+            tooltip
+              .style("left", d3.event.pageX + 20 + "px")
+              .style("top", d3.event.pageY - 10 + "px")
+              .style("display", "inline-block")
+              .html("<b>Value:" + d.close + "</b><br />on date:" + d.date);
+
+          })
+          .on("mouseout", function(d, i) {
+            d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","5px")
+            tooltip.style("display", "none");
+          })
+
+  });
+</script>
+
+
+<script>
+var pie_data=[{  city:"Deesa",  value:30},{  city:"Patan",  value:20},{  city:"Ahmedabad",  value:15},{  city:"Bhabhar",  value:35},{  city:"BHakhasar",  value:50}];
+var pie_colors = ["#f44842", "#f4b841", "#f4f141", "#46f441", "#41f4d9", "#4941f4", "#f441d6"]
+var pie_width = 1000,
+    pie_height = 600,
+    pie_radius = Math.min(width, height) / 2;
+
+
+var arc = d3.arc()
+.cornerRadius(7)
+    .outerRadius(pie_radius - 10)
+    .innerRadius(0);
+
+var labelArc = d3.arc()
+    .outerRadius(pie_radius - 10)
+    .innerRadius(pie_radius - 40);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.value; });
+
+var pie_svg = d3.select("#pie-chart").append("svg")
+    .attr("width", pie_width)
+    .attr("height", pie_height)
+  .append("g")
+    .attr("transform", "translate(" + pie_width / 2 + "," + pie_height / 2 + ")");
+
+  var g = pie_svg.selectAll(".arc")
+      .data(pie(pie_data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d,i) { return pie_colors[i]; })
+      .on("mousemove", function(d) {
+        d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","10px")
+        tooltip
+          .style("left", d3.event.pageX + 20 + "px")
+          .style("top", d3.event.pageY - 10 + "px")
+          .style("display", "inline-block")
+          .html("<b>Value:" + d.value + "</b><br />on city:" + d.city);
+
+      })
+      .on("mouseout", function(d, i) {
+        d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","5px")
+        tooltip.style("display", "none");
+      });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+      .attr("dy", ".30em")
+      .attr("class","pie-text")
+      .html(function(d) { return d.data.value })
+
+
+</script>
+
+
+<script>
+var donut_data=[{  city:"Deesa",  value:30},{  city:"Patan",  value:20},{  city:"Ahmedabad",  value:15},{  city:"Bhabhar",  value:35},{  city:"BHakhasar",  value:50}];
+var donut_colors = ["#f44842", "#f4b841", "#f4f141", "#46f441", "#41f4d9", "#4941f4", "#f441d6"]
+var donut_width = 1000,
+    donut_height = 600,
+    donut_radius = Math.min(width, height) / 2;
+
+
+var arc = d3.arc()
+.cornerRadius(7)
+    .outerRadius(donut_radius - 10)
+    .innerRadius(donut_radius - 70);
+
+var labelArc = d3.arc()
+    .outerRadius(donut_radius - 10)
+    .innerRadius(donut_radius - 40);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.value; });
+
+var donut_svg = d3.select("#donut-chart").append("svg")
+    .attr("width", donut_width)
+    .attr("height", donut_height)
+  .append("g")
+    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
+
+  var g = donut_svg.selectAll(".arc")
+      .data(pie(donut_data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d,i) { return donut_colors[i]; })
+      .on("mousemove", function(d) {
+        console.log(d);
+        d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","10px")
+        tooltip
+          .style("left", d3.event.pageX + 20 + "px")
+          .style("top", d3.event.pageY - 10 + "px")
+          .style("display", "inline-block")
+          .html("<b>Value:" + d.data.value + "</b><br />on city:" + d.data.city);
+
+      })
+      .on("mouseout", function(d, i) {
+        d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","5px")
+        tooltip.style("display", "none");
+      });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+      .attr("dy", ".30em")
+      .attr("class","pie-text")
+      .html(function(d) { return d.data.value })
+
+
+</script>
