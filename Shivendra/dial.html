@@ -1,0 +1,83 @@
+<html>
+ <head>
+  <title> Box with different property</title>
+ </head>
+  <body>
+  <input id="input" type="text" /><br>
+  <button id="CC">Change_Color</button>
+  <br><br><br>
+  <button id="italic" onclick="Italic()">Italic</button>
+  <button id="bold" onclick="bold()">Bold</button>
+  <button id="un" onclick="underline()">Underline</button>
+       <p id="para">jQuery is a fast, small, and feature-rich JavaScript library. <br>
+         It makes things like HTML document traversal and manipulation, event handling, animation, and Ajax much simpler with an easy-to-use API that works across a multitude of browsers.<br>
+          With a combination of versatility and extensibility, jQuery has changed the way that millions of people write JavaScript.</p>
+  </body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<script>
+function Italic(){
+var temp=document.getElementById("para");
+if(temp.style.fontStyle=="italic")
+temp.style.fontStyle="normal";
+else {
+  temp.style.fontStyle="italic";
+}
+}
+//$("#italic").on("click",function(){
+//  $("p").css("fontStyle","italic");
+//});
+function bold(){
+var temp=document.getElementById("para");
+if(temp.style.fontWeight=="bold")
+temp.style.fontWeight="normal";
+else {
+  temp.style.fontWeight="bold";
+}
+}
+
+//$("#bold").on("click",function(){
+//  $("p").css("font-weight","bold");
+//});
+function underline(){
+var temp=document.getElementById("para");
+if(temp.style.textDecoration=="Underline")
+temp.style.textDecoration="none";
+else {
+  temp.style.textDecoration="Underline";
+}
+}
+//$("#un").on("click",function(){
+  //$("p").css("text-decoration","underline");
+//});
+</script>
+
+<script>
+$("#CC").on("click",function(){
+var x=document.getElementById("input").value;
+});
+
+var arr=['a','b','c','d','e','f','A','B','C','D','E','F','0','1','2','3','4','5','6','7','8','9','#'];
+
+$("#CC").click(function(){
+var valu=$("#input").val();
+if(valu[0]=='#')
+{
+
+for(var i=1;i<valu.length;i++)
+{
+  var index=valu[i];
+  if(jQuery.inArray(index,arr)!=-1){
+//  alert("great click ok to change color");
+  $("p").css( 'color',valu );
+  }
+  else {
+   alert("please enter valid color code");
+  }}}
+else {
+alert("please enter valid color code");
+}
+});
+</script>
