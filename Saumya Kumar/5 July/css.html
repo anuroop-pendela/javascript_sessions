@@ -1,0 +1,72 @@
+<!DOCKTYPE html>
+<html>
+<head>
+  <title>CSS</title>
+  <style>
+  body {background-color: lightgreen;}
+  h1 {color: Red;
+    text-align: center;}
+  p {
+    color: green;
+    font-style: italic;
+    font-family: Arial;
+    font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>This Is Heading</h1>
+  <div>
+    <p1>Enter Font Size : </p1>
+    <input type="text" id = "fsize"/>
+  <button id = "fs">Apply</button>
+  </div>
+  <br>
+  <div>
+  <p1>Enter Color of Choice : </p1>
+  <input type="text" id = "color"/>
+  <button id = "col">Apply</button>
+  </div>
+  <br>
+<p>This Paragraph is Changing</p>
+</body>
+<html>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+</script>
+<script>
+$("#fs").on("click", function()
+{
+  var x = $("#fsize").val();
+  $('p').css("font-size", x);
+});
+$("#col").on("click", function()
+{
+  var y = $("#color").val();
+  if( y.length !=7)
+  {
+    alert("Enter a valid Colour Code ");
+    return;
+  }
+  if(y[0] =='#')
+  {
+    for(var i=1;i<=6;i++)
+    {
+  //  console.log(y[i]>='0' && y[i]<='9');
+      if(y[i]>='0' && y[i]<='9')
+      {continue;}
+      else if(y[i]>='a' && y[i]<='f')
+      {continue;}
+      else if(y[i]>='A' && y[i]<='F')
+      {continue;}
+      else
+      {
+        alert("Enter a valid Colour Code ");
+        return;
+      }
+    }
+    {$('p').css("color",y);}
+  }
+  else
+  {alert("Enter a valid Colour Code ")}
+});
+</script>
