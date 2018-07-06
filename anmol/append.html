@@ -1,0 +1,33 @@
+<html>
+<head>
+Please enter anything in box
+<title>paragraph append</title>
+</head>
+
+<body>
+<input id="box" type = "text" value =" ">
+
+<button onclick ="chng()">append
+</button>
+
+<p> My favoutite teams are:
+</p> 
+
+</body>
+</html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" 
+integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" 
+crossorigin="anonymous">
+</script>
+
+<script>
+function chng(){
+var textentered = $('#box').val();
+$('p').append(textentered+' ' );
+}
+</script>
+
+
+
+
