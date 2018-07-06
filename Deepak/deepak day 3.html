@@ -1,0 +1,86 @@
+<html>
+<head>
+<title>change font size and color </title>
+<style>
+body{
+  background-color: green ;
+}
+</style>
+</head>
+<body>
+  Enter Font Size :
+<input id = "t1" type "text" />
+<button id= "b1" >change_font</button><br/><br/>
+Enter Color Code :
+<input id = "t2" type "text" />
+
+<button id= "b2" >change_color</button>
+<div>
+  <p id = "para" > change the color , font of this line </p>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+ integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+<script>
+$("#b1").on("click", function(e) {
+           var y = $("#t1").val()+"px";
+  $("#para").css("font-size", y );
+}
+ );
+</script>
+<script>
+$("#b2").on("click",function()
+{
+    var x = $("#t2").val();
+console.log(x);
+    if(x.length != 6)
+    {
+      alert("please enter valid code");
+      return;
+    }
+      for(var i = 0 ; i < 6 ; i++)
+      {
+        if(  x[i]> "f")
+        {
+          alert("please enter valid code");
+          return;
+        }
+        else if(  "F" < x[i] &&  x[i]< "a"||x[i]<"0")
+        {
+          alert("please enter valid code");
+          return;
+        }
+        else if(  "9" < x[i] &&  x[i]< "A")
+        {
+          alert("please enter valid code");
+          return;
+        }
+      }
+    x="#"+x;
+    $("#para").css("color", x);
+
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
