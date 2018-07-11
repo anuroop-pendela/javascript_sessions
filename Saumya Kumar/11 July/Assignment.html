@@ -1,0 +1,61 @@
+<!DOCKTYPE html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+</html>
+<head>
+  <title>Assingment</title>
+  <style>
+  body
+  {background-color: lightblue;
+  font-family: 'Open Sans', sans-serif;}
+  .bar
+  {fill: green;
+  opacity: 80%}
+  .cir{
+    fill:red;
+    opacity: 80%;
+  }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center;background-color: purple;font-family: sans-serif;border: outset;">The Making of Four Parameter Graph !</h1>
+  <p style="text-align:center;background-color: steelblue;font-family: sans-serif;border: double;">Population & Respective Pollution Curve</p>
+  <div id="rec" style="border:groove"></div>
+  <div id="circ" ></div>
+</body>
+</html>
+<script>
+  var a = d3.select("#rec").append("svg").attr("width", 1200).attr("height", 600);
+  var width = 100;
+  var gap = 50;
+  var bottom_bar = 600
+  var data =
+  [ {"Population": 100,"Pollution": 10},
+    {"Population": 128,"Pollution": 21},
+    {"Population": 243,"Pollution": 15},
+    {"Population": 177,"Pollution": 32},
+    {"Population": 504,"Pollution": 25},
+    {"Population": 407,"Pollution": 18},
+    {"Population": 365,"Pollution": 29},
+    {"Population": 451,"Pollution": 22}];
+</script>
+<script>
+             a.selectAll("rect")
+              .data(data)
+              .enter()
+              .append("rect")
+              .attr("class", "bar")
+              .attr("x", function(data,index){return (width+gap)*index+20;})
+              .attr("y", function(data){return bottom_bar-data.Population;})
+              .attr("width", 100)
+              .attr("height",function(data){return data.Population;});
+</script>
+<script>
+            a.selectAll(".cir")
+              .data(data)
+              .enter()
+              .append("circle")
+              .attr("class","cir")
+              .attr("r",function(data){return (data.Pollution);})
+              .attr("cx",function(data,index){return (width+gap)*index+20;})
+              .attr("cy",function(data){return bottom_bar-data.Population;})
+  </script>
