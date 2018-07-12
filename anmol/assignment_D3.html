@@ -1,0 +1,136 @@
+<html>
+<head ><span style="font-size:32px; color:#423454; font-weight: 1000">
+  The population and pollution Data of some selected cities</span>
+  <title>
+    Learning to append svg elements
+  </title>
+</head>
+<body>
+<div id="d3_div">
+</div>
+</body>
+Bar's height represent the <span style="color:#0000FF;font-weight: 1000;font-size:40">population</span> of the locations
+</br>
+Circle's radius represents the <span style ="color:#ff0000;font-weight:1000;font-size:40">pollution</span> level of the locations
+
+</html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<style>
+body{
+  font-size:25px;
+  background-color: #87ceeb;
+}
+{
+  color: red
+}
+.bar {
+  fill: blue;
+}
+.circle{
+  fill: red;
+}
+
+.toolTip {
+      pointer-events: none;
+      position: absolute;
+      display: none;
+      min-width: 50px;
+      height: auto;
+      background: none repeat scroll 0 0 #ffffff;
+      padding: 9px 14px 13px 14px;
+      border-radius: 4px;
+      text-align: left;
+      line-height: 1.3;
+      color: #5B6770;
+      box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+    }
+
+.toolTip:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 12px solid white;
+      position: absolute;
+      bottom: 0px;
+      left: 50%;
+      margin-left: -12px;
+    }
+
+.toolTip span {
+      font-weight: 500;
+      color: #081F2C;
+    }
+
+</style>
+<script>
+var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+var chart = d3.select("#d3_div").append("svg").attr("width",1300).attr("height",570).append("g");
+var data =
+  [ {"location":"Delhi","location_data":{"Population": "100","Pollution": 10}},
+    {"location":"Kanpur","location_data":{"Population": "128","Pollution": 21}},
+    {"location":"Hyderbad","location_data":{"Population": "243","Pollution": 15}},
+    {"location":"Varanasi","location_data":{"Population": "177","Pollution": 32}},
+    {"location":"Patna","location_data":{"Population": "504","Pollution": 25}},
+    {"location":"Jamshedpur","location_data":{"Population": "407","Pollution": 18}},
+    {"location":"Chennai","location_data":{"Population": "365","Pollution": 29}},
+    {"location":"Mumbai","location_data":{"Population": "451","Pollution": 22}}
+  ]
+var width = 70;
+var gap = 25;
+var bottom_y = 565;
+// city_name=function(data){
+//   return data[i].location;
+//
+// }
+//console.log(city_name(data));
+rect = chart.selectAll("rect")
+          .data(data)
+          .enter()
+          .append("g")
+          .append("rect")
+          .attr("class", "bar")
+          .attr("x",function(data,index){return (width+gap)*index+200})
+          .attr("y",function(data){return  bottom_y - data.location_data.Population;})
+          .attr("width",width)
+          .attr("height",function(data){return data.location_data.Population;})
+          // .append("text")
+          //        .style("fill", "red")
+          //        .style("font-size", "14px")
+          //        .attr("dy", ".35em")
+          //        .attr("x", 600)
+          //        .attr("y", 500)
+          //        .style("style", "label")
+          //        .text("hi")
+
+          .on("mousemove", function(d) {
+            tooltip
+              .style("left", d3.event.pageX - 70 + "px")
+              .style("top", d3.event.pageY +40 + "px")
+              .style("display", "inline-block")
+              .html("<b>City:" +  d.location + "</b></br>Population:"+ d.location_data.Population +"</br> Pollution level:" + d.location_data.Pollution)
+
+          })
+          .on("mouseout", function(d, i) {
+            tooltip.style("display", "none");
+          })
+
+
+chart.selectAll("circle")
+          .data(data)
+          .enter()
+          .append("circle")
+          .attr("class", "circle")
+          .attr("cx",function(data,index){return (width+gap)*index + 200})
+          .attr("cy",function(data){return bottom_y - data.location_data.Population;})
+          .attr("r",function(data){return data.location_data.Pollution*1.3;})
+          .attr("class", "circle");
+
+
+
+
+
+
+</script>

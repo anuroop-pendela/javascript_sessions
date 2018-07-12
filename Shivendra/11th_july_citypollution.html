@@ -1,0 +1,83 @@
+<!DOCKTYPE html>
+<html>
+<head>
+<style>
+
+ .bar{
+   fill: green;
+ }
+
+.cir{
+  fill: yellow;
+}
+</style>
+</head>
+
+
+  <body>
+     <div id="pollut">
+
+     </div>
+  </body>
+
+</html>
+
+<script src= "https://d3js.org/d3.v5.min.js" ></script>
+
+<script>
+  var svgcontainer=d3.select("#pollut")
+                    .append("svg")
+                    .attr("width",1000)
+                    .attr("height",600)
+                    .style("border", "1px solid");
+          var width=40;
+          var gap=15;
+
+  var city=[{'population':100,'pollution':15},
+            {'population':150,'pollution':18},
+            {'population':160,'pollution':10},
+            {'population':300,'pollution':15},
+            {'population':357,'pollution':30},
+            {'population':225,'pollution':14},
+            {'population':250,'pollution':18},
+            {'population':240,'pollution':15},
+            {'population':260,'pollution':20}
+          ];
+          console.log(city[0].population);
+</script>
+<script>
+  svgcontainer.selectAll("rect")
+              .data(city)
+              .enter()
+              .append("rect")
+              .attr("class","bar")
+              .attr("x",function(d,i){return (width+gap)*i+20})
+              .attr("y",function(d,i){return 590-city[i].population})
+              .attr("width",width)
+              .attr("height",function(d,i){return city[i].population})
+
+              svgcontainer.selectAll("text")
+                          .data(city)
+                          .enter()
+                          .append("text")
+                          .attr("x",function(d,i){return (width+gap)*i+30})
+                          .attr("y",570)
+                          .text(function(d,i){return city[i].population});
+
+              svgcontainer.selectAll("circle")
+                          .data(city)
+                          .enter()
+                          .append("circle")
+                          .attr("class","cir")
+                          .attr("r",function(d,i){return city[i].pollution })
+                          .attr("cx",function(d,i){return (width+gap)*i+20})
+                          .attr("cy",function(d,i){return 590-city[i].population})
+
+            svgcontainer.selectAll("text")
+                        .data(city)
+                        .enter()
+                        .append("text")
+                        .attr("x",function(d,i){return (width+gap)*i+20})
+                        .attr("y",function(d,i){return 590-city[i].population})
+                        .text(function(d,i){return city[i].pollution});
+</script>
