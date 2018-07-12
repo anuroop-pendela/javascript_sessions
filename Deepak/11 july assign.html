@@ -1,0 +1,62 @@
+<script src="https://d3js.org/d3.v5.min.js"></script>
+</html>
+<head>
+  <title>Assingment d3</title>
+  <style>
+  .bar
+  {fill: steelblue;}
+  .cir{
+    fill:black;  }
+  h1{
+       text-align: center;
+       color: yellow;
+       background-color: blue;
+  }
+    </style>
+    </head>
+    <body>
+    <h1>population vs pollution</h1>
+    <h3 style= "color:steelblue;text-align: center">Population<h3>
+    <h3 style= "color:black;text-align: center">Pollution<h3>
+    <div id="rec" style="border:groove"></div>
+    <div id="cir" ></div>
+
+  </body>
+  </html>
+  <script>
+  var q = d3.select("#rec").append("svg").attr("width",1300).attr("height",490);
+
+  var gap = 150;
+  var bottom_axis = 550;
+  var city =
+  [ {"Population": 103,"Pollution": 9},
+    {"Population": 120,"Pollution": 20},
+    {"Population": 268,"Pollution": 14},
+    {"Population": 170,"Pollution": 5},
+    {"Population": 504,"Pollution": 29},
+    {"Population": 407,"Pollution": 18},
+    {"Population": 100,"Pollution": 30},];
+    </script>
+    <script>
+                 q.selectAll("rec")
+                  .data(city)
+                  .enter()
+                  .append("rect")
+                  .attr("class", "bar")
+                  .attr("x", function(city,index){return gap*index+20;})
+                  .attr("y", function(city){return bottom_axis-city.Population;})
+                  .attr("width", 100)
+                  .attr("height",function(city){return city.Population;});
+    </script>
+    <script>
+                q.selectAll("cir")
+                  .data(city)
+                  .enter()
+                  .append("circle")
+                  .attr("class","cir")
+                  .attr("r",function(city){return (city.Pollution);})
+                  .attr("cx",function(city,index){return (gap)*index+20;})
+                  .attr("cy",function(city){return bottom_axis-city.Population;})
+    </script>
+    <script>
+    
