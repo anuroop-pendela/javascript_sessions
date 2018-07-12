@@ -5,8 +5,7 @@
   <title>Assingment</title>
   <style>
   body
-  {background-color: lightblue;
-  font-family: 'Open Sans', sans-serif;}
+  {font-family: 'Open Sans', sans-serif;}
   .bar{fill: green;}
   .bar:hover{fill:blue;}
   .cir{fill:red;}
@@ -20,13 +19,13 @@
 <body>
   <h1 style="text-align:center;background-color: purple;font-family: sans-serif;border: outset;">The Making of Four Parameter Graph !</h1>
   <p style="text-align:center;background-color: steelblue;font-family: sans-serif;border: double;">Population & Respective Pollution Curve</p>
-  <div id="rec" style="border:groove"></div>
+  <div id="rec"></div>
   <div id="circ" ></div>
   <div id="lab" ></div>
 </body>
 </html>
 <script>
-  var a = d3.select("#rec").append("svg").attr("width", 1200).attr("height", 600);
+  var a = d3.select("#rec").append("svg").attr("width", 1200).attr("height", 600).style("background-color" , "lightblue").style("border" , "groove");
   var width = 100;
   var gap = 50;
   var bottom_bar = 550;
@@ -39,16 +38,18 @@
     {"Population": 407,"Pollution": 18},
     {"Population": 365,"Pollution": 29},
     {"Population": 451,"Pollution": 22}];
+
              a.selectAll("rec")
               .data(city)
               .enter()
               .append("rect")
               .attr("class", "bar")
               .attr("x", function(city,index){return (width+gap)*index+20;})
-              .attr("y", function(city){return bottom_bar-city.Population;})
               .attr("width", 110)
+              .attr("y", function(city){return bottom_bar-city.Population;})
               .attr("height",function(city){return city.Population;})
-            a.selectAll(".cir")
+
+              a.selectAll(".cir")
               .data(city)
               .enter()
               .append("circle")
