@@ -70,11 +70,14 @@
                         return value.Population;
                       });
 
+  var  tooltip=chart.append("text").style("font-size",30).style("fill","black");
+
   chart.selectAll("circle")
     .data(data)
     .enter()
     .append("circle")
     .attr("class","pollu")
+    .attr("opacity","10")
     .attr("cx",function(value,i)
                   {
                       return 50+i*70+25;
@@ -86,21 +89,36 @@
                   //    console.log(100+max_height-value.Population);
                     })
     .attr("r",function(value){ return value.Pollution*0.75})
+    .on("mousemove",function(d,i)
+                        {
+                          tooltip.text(d.Pollution).attr("x",20+50+i*70+25).attr("y",max_height-d.Population-d.Pollution*.75);
+                        })
+    // .on("mouseout",function(d)
+    //                   {
+    //                     tooltip.style("display","none")
+    //                 })
 
-    chart.selectAll("circle").enter()
-      .append("text")
-      .attr("class","tooltip")
-      .attr("x",function(value,i)
-                  {
-                      return 50+i*70+25;
-                  })
-      .attr("y",function(value)
-                      {
-                        return max_height-value.Population-value.Pollution*.75;
-                      })
-      .attr("font-size",30)
-      .attr("fill","blue")
-      .text("hey cbahcabjhcjb ca hkhcbjhbahbsh jhhbvhjasbhb bhsbcbchthere");
+
+
+    // var display= chart.append("text")
+    // chart.selectAll("pollu")
+    //   .data(data).enter()
+    //   .append("text")
+    //   .attr("class","tooltip")
+    //   .attr("x",function(value,i)
+    //               {
+    //                   return 50+i*70+25;
+    //               })
+    //   .attr("y",function(value)
+    //                   {
+    //                     return max_height-value.Population-value.Pollution*.75;
+    //                   })
+    //     .attr("font-size",30)
+    //     .attr("fill","black")
+    //     .on("mouseover",function(d)
+    //                       {
+    //                           text("hey");
+    //                       })
 
     chart.append("rect")
     .attr("class","show")
