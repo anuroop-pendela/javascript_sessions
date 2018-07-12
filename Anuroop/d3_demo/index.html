@@ -52,7 +52,7 @@ body {
   }
 
   #add-visual,#line-chart, #pie-chart, #donut-chart {
-    border-style: groove;
+   border-style: ridge;
     width: 1000px;
     height: 600px;
   }
@@ -180,31 +180,34 @@ body {
     width = 1000 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
-  var strictIsoParse = d3.utcParse("%Y-%m-%d");
+  var dated = d3.utcParse("%Y-%m-%d");
 
 
-  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-    y = d3.scaleLinear().rangeRound([height, 0]);
-
-  var g = svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
-
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
   x.domain(data.map(function(d) {
-    return strictIsoParse(d.x);
+    return dated(d.x);
   }));
+
+  var y = d3.scaleLinear().rangeRound([height, 0]);
   y.domain([0, d3.max(data, function(d) {
     return d.y;
   })]);
 
+
+  var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
+
+  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+
+
   g.append("g")
-    .attr("class", "axis axis--x")
+    .attr("class", "axis--x")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
 
   g.append("g")
-    .attr("class", "axis axis--y")
+    .attr("class", "axis--y")
     .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
 
 
@@ -215,7 +218,7 @@ body {
     .attr("y", height)
     .attr("width", x.bandwidth())
     .attr("x", function(d) {
-      return x(strictIsoParse(d.x));
+      return x(dated(d.x));
     })
     .on("mousemove", function(d) {
       tooltip

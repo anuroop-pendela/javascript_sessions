@@ -7,17 +7,13 @@
   body
   {background-color: lightblue;
   font-family: 'Open Sans', sans-serif;}
-  .bar
-  {fill: green;
-  opacity: 80%}
-  .cir{
-    fill:red;
-    opacity: 80%;
-  }
-  .text{
-    font-size: 50;
-    font-weight: bold;
-  }
+  .bar{fill: green;}
+  .bar:hover{fill:blue;}
+  .cir{fill:red;}
+  .cir:hover{fill:yellow;}
+  .text
+  {font-size: 50;
+    font-weight: bold;}
 
   </style>
 </head>
@@ -43,8 +39,6 @@
     {"Population": 407,"Pollution": 18},
     {"Population": 365,"Pollution": 29},
     {"Population": 451,"Pollution": 22}];
-</script>
-<script>
              a.selectAll("rec")
               .data(city)
               .enter()
@@ -52,10 +46,8 @@
               .attr("class", "bar")
               .attr("x", function(city,index){return (width+gap)*index+20;})
               .attr("y", function(city){return bottom_bar-city.Population;})
-              .attr("width", 115)
-              .attr("height",function(city){return city.Population;});
-</script>
-<script>
+              .attr("width", 110)
+              .attr("height",function(city){return city.Population;})
             a.selectAll(".cir")
               .data(city)
               .enter()
@@ -63,21 +55,44 @@
               .attr("class","cir")
               .attr("r",function(city){return (city.Pollution);})
               .attr("cx",function(city,index){return (width+gap)*index+20;})
-              .attr("cy",function(city){return bottom_bar-city.Population;})
-</script>
-<script>
+              .attr("cy",function(city){return bottom_bar-city.Population;});
+              a.append("text")
+               .attr("class","text")
+               .attr("x", 100)
+               .attr("y", 100)
+               .style("fill","green")
+               .text(" : Population");
+          a.selectAll("rec")
+           .data(city)
+           .enter()
+           .append("text")
+           .attr("x", function(city,index){return (width+gap)*index+60;})
+           .attr("y", function(city){return bottom_bar-city.Population+20;})
+           .style("fill","Black")
+           .text(function(city,index){return city.Population;});
+           a.selectAll("cir")
+            .data(city)
+            .enter()
+            .append("text")
+            .attr("x", function(city,index){return (width+gap)*index+5;})
+            .attr("y", function(city){return bottom_bar-city.Population+5;})
+            .style("fill","Black")
+            .text(function(city,index){return city.Pollution;});
+          a.append("rect")
+           .attr("class","bar")
+           .attr("x",50)
+           .attr("y",65)
+           .attr("width",40)
+           .attr("height",40);
           a.append("text")
            .attr("class","text")
            .attr("x", 100 )
-           .attr("y", 100 )
-           .style("fill","green")
-           .text("Population");
-</script>
-<script>
-          a.append("text")
-           .attr("class","text")
-           .attr("x", 100 )
-           .attr("y", 160 )
+           .attr("y", 155 )
            .style("fill","red")
-           .text("Pollution");
+           .text(" : Pollution");
+          a.append("circle")
+           .attr("class","cir")
+           .attr("r", 22)
+           .attr("cx",70)
+           .attr("cy",140);
 </script>
