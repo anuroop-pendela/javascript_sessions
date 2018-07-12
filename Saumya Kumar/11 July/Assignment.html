@@ -75,7 +75,7 @@
             .data(city)
             .enter()
             .append("text")
-            .attr("x", function(city,index){return (width+gap)*index+5;})
+            .attr("x", function(city,index){return (width+gap)*index+10;})
             .attr("y", function(city){return bottom_bar-city.Population+5;})
             .style("fill","Black")
             .text(function(city,index){return city.Pollution;});
