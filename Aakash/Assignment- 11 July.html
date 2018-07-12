@@ -1,0 +1,134 @@
+<html>
+  <title>d3 Demo</title>
+  <body>
+    <h2>Population and Pollution</h2>
+    <div style="width:1280; height:600; background: silver;" id="popVSpolu"></div>
+
+  </body>
+</html>
+
+<style>
+  .pop{
+      fill: blue;
+  }
+  .pollu{
+      fill: red;
+  }
+
+  .show{
+     fill :blue;
+  }
+
+  .show2{
+    fill: red;
+  }
+
+</style>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+<script>
+
+  shift=100;
+  chart= d3.select("#popVSpolu").append("svg").attr("width",1280).attr("height",600);
+  data =
+      [
+        {"Population": 100,"Pollution": 10},
+        {"Population": 128,"Pollution": 21},
+        {"Population": 243,"Pollution": 15},
+        {"Population": 177,"Pollution": 32},
+        {"Population": 504,"Pollution": 25},
+        {"Population": 407,"Pollution": 18},
+        {"Population": 365,"Pollution": 29},
+        {"Population": 451,"Pollution": 22}
+      ];
+
+    max_height= 50+d3.max(data,function(d)
+                              {
+                                 return d.Population;
+                              });
+    console.log(max_height);
+
+  chart.selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class","pop")
+    .attr("x",function(value,i)
+                  {
+                      return 50+i*70;
+                  }
+          )
+    .attr("y",function(value)
+                    {
+                      return max_height-value.Population;
+                //      console.log(100+max_height-value.Population);
+                    })
+    .attr("width",50)
+    .attr("height",function(value)
+                      {
+                        return value.Population;
+                      });
+
+  chart.selectAll("circle")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("class","pollu")
+    .attr("cx",function(value,i)
+                  {
+                      return 50+i*70+25;
+                  }
+          )
+    .attr("cy",function(value)
+                    {
+                      return max_height-value.Population-value.Pollution*.75;
+                  //    console.log(100+max_height-value.Population);
+                    })
+    .attr("r",function(value){ return value.Pollution*0.75})
+
+    chart.selectAll("circle").enter()
+      .append("text")
+      .attr("class","tooltip")
+      .attr("x",function(value,i)
+                  {
+                      return 50+i*70+25;
+                  })
+      .attr("y",function(value)
+                      {
+                        return max_height-value.Population-value.Pollution*.75;
+                      })
+      .attr("font-size",30)
+      .attr("fill","blue")
+      .text("hey cbahcabjhcjb ca hkhcbjhbahbsh jhhbvhjasbhb bhsbcbchthere");
+
+    chart.append("rect")
+    .attr("class","show")
+    .attr("x",700-5)
+    .attr("y",200)
+    .attr("width",30)
+    .attr("height",30);
+
+    chart.append("text")
+    .attr("x",732)
+    .attr("y",219)
+    .attr("font-size",30)
+    .attr("fill","blue")
+    .text(":    POPULATION");
+
+
+
+    chart.append("circle")
+    .attr("class","show2")
+    .attr("cx",710)
+    .attr("cy",300)
+    .attr("r",20)
+
+    chart.append("text")
+    .attr("x",732)
+    .attr("y",310)
+    .attr("font-size",30)
+    .attr("fill","red")
+    .text(":    POLLUTION");
+
+</script>
