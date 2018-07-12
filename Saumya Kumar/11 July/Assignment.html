@@ -14,6 +14,11 @@
     fill:red;
     opacity: 80%;
   }
+  .text{
+    font-size: 50;
+    font-weight: bold;
+  }
+
   </style>
 </head>
 <body>
@@ -21,14 +26,15 @@
   <p style="text-align:center;background-color: steelblue;font-family: sans-serif;border: double;">Population & Respective Pollution Curve</p>
   <div id="rec" style="border:groove"></div>
   <div id="circ" ></div>
+  <div id="lab" ></div>
 </body>
 </html>
 <script>
   var a = d3.select("#rec").append("svg").attr("width", 1200).attr("height", 600);
   var width = 100;
   var gap = 50;
-  var bottom_bar = 600
-  var data =
+  var bottom_bar = 550;
+  var city =
   [ {"Population": 100,"Pollution": 10},
     {"Population": 128,"Pollution": 21},
     {"Population": 243,"Pollution": 15},
@@ -39,23 +45,39 @@
     {"Population": 451,"Pollution": 22}];
 </script>
 <script>
-             a.selectAll("rect")
-              .data(data)
+             a.selectAll("rec")
+              .data(city)
               .enter()
               .append("rect")
               .attr("class", "bar")
-              .attr("x", function(data,index){return (width+gap)*index+20;})
-              .attr("y", function(data){return bottom_bar-data.Population;})
-              .attr("width", 100)
-              .attr("height",function(data){return data.Population;});
+              .attr("x", function(city,index){return (width+gap)*index+20;})
+              .attr("y", function(city){return bottom_bar-city.Population;})
+              .attr("width", 115)
+              .attr("height",function(city){return city.Population;});
 </script>
 <script>
             a.selectAll(".cir")
-              .data(data)
+              .data(city)
               .enter()
               .append("circle")
               .attr("class","cir")
-              .attr("r",function(data){return (data.Pollution);})
-              .attr("cx",function(data,index){return (width+gap)*index+20;})
-              .attr("cy",function(data){return bottom_bar-data.Population;})
-  </script>
+              .attr("r",function(city){return (city.Pollution);})
+              .attr("cx",function(city,index){return (width+gap)*index+20;})
+              .attr("cy",function(city){return bottom_bar-city.Population;})
+</script>
+<script>
+          a.append("text")
+           .attr("class","text")
+           .attr("x", 100 )
+           .attr("y", 100 )
+           .style("fill","green")
+           .text("Population");
+</script>
+<script>
+          a.append("text")
+           .attr("class","text")
+           .attr("x", 100 )
+           .attr("y", 160 )
+           .style("fill","red")
+           .text("Pollution");
+</script>
