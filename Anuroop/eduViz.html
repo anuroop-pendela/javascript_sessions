@@ -1,0 +1,166 @@
+<html>
+
+  <body>
+    <br>
+    <p><script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script></p>
+    <div id = "visualizer"></div>
+    <script>
+        var height = 700,
+            width = 1300;
+
+        var zones  = ["north","east","west","south","central","north-east","UT"]
+        var headings = ["Total Population","Illiterates","Literates but below primary","Primary","Middle","Secondary","Higher Secondary","Graduate or Higher","Other "]
+var c20b = d3.scale.linear().domain([0,9]).range(["green","orange"]);
+        var zonesStates = [
+          ["JAMMU & KASHMIR","HIMACHAL PRADESH","PUNJAB","HARYANA"],
+          ["BIHAR","WEST BENGAL","JHARKHAND","ODISHA"],
+          ["RAJASTHAN","GUJARAT","MAHARASHTRA","GOA"],
+          ["ANDHRA PRADESH","KARNATAKA","KERALA","TAMILNADU","TELANGANA"],
+          ["UTTARAKHAND","UTTAR PRADESH","CHHATTISGARH","MADHYA PRADESH"],
+          ["SIKKIM","RUNACHAL PRADESH","NAGALAND","MANIPUR","MIZORAM","TRIPURA","MEGHALAYA","ASSAM"],
+          ["CHANDIGARH","NCT OF DELHI","DAMAN AND DIU","DADRA & NAGAR HAVELI","LAKSHADWEEP","PUDUCHERRY","ANDAMAN & NICOBAR ISLANDS"]
+        ]
+        var zonesData = [
+          [47662769,15663982,4976876,7640609,6669481,6633303,3984533,1767999,325371],
+          [233233971,90559817,38103502,41374578,31825480,16348595,8403367,5734233,755619],
+          [153880989,54036317,19947937,29365665,18048064,16899356,9299378,5388712,893395],
+          [164522575,48732413,17632797,30129243,24403832,22089112,11353019,8330064,1844813],
+          [241269206,94529073,37449064,39677576,30025356,18657451,12330887,7793219,742811],
+          [39794232,12306406,5172458,8214516,7733990,3314439,1906983,1003785,140202],
+          [6328664,967689,552573,1170601,1203752,1079605,740566,571111,42474]
+        ]
+        var total = 100;
+        var canvas = d3.select("#visualizer")
+                        .append("svg")
+                        .attr("height",height)
+                        .attr("width",width)
+                        .style("background","lightgrey");
+
+        var cx = 150;
+        canvas.selectAll("nameCircles")
+              .data(zones)
+              .enter()
+              .append("ellipse")
+              .attr("cx",function(d,i){return (i+1)*cx;})
+              .attr("cy",100)
+              .attr("rx",50)
+              .attr("ry",50)
+              .attr("fill","green")
+              .on("mousein",function(){console.log("mousein");})
+              .on("mouseover",function(d,i){d3.select(this).attr("fill","gray");console.log("lol");updateRects(i);})
+              .on("mouseout",function(){d3.select(this).attr("fill","green");});
+        canvas.selectAll("nameCircles")
+              .data(zones)
+              .enter()
+              .append("text")
+              .attr("x",function(d,i){return (i+1)*cx;})
+              .attr("y",100)
+              .text(function(d){return d;})
+              .attr("fill","white");
+        var baseX = cx,
+            baseY = 400;
+        var height = 100;
+        var axisScale = d3.scale.linear()
+                         .domain([100,0])
+                         .range([0,200]);
+
+//Create the Axis
+        var xAxis = d3.svg.axis()
+                    .orient("left")
+                   .scale(axisScale)
+                   .ticks(8);
+
+
+//Create an SVG group Element for the Axis elements and call the xAxis function
+
+        // canvas.append("circle")
+        //       .attr("cx",cx)
+        //       .attr("cy",600)
+        //       .attr("r",10);
+        canvas
+          .append("g")
+          .selectAll("rect")
+          .data(zonesData[0])
+          .enter()
+          .append("rect")
+          .attr("class","update")
+          .attr("x",function(d,i){return (i+1)*70+baseX;})
+          .attr("y",baseY)
+          .attr("rx",15)
+          .attr("ry",15)
+          .attr("height",1)
+          .attr("width",40)
+          .attr("fill",function(d,i){return c20b(i)})
+          .transition()
+          .duration(1000)
+          .attr("y",function(d,i){return  baseY-(d/zonesData[0][0]*200)})
+          .attr("height",function(d,i){return  (d/zonesData[0][0]*200)})
+
+        canvas
+          .select("g")
+          .selectAll("text")
+          .data(zonesData[0])
+          .enter()
+          .append("text")
+          .attr("class","update")
+          .attr("fill",function(d,i){return c20b(i)})
+          .attr("text-anchor", "start")
+         .attr("transform", function(d,i){
+                            var x = (i+1)*70+160;
+                            var y = 420;
+                            return "translate("+x+","+y+") rotate(40)";
+         })
+          .text(function(d,i){return headings[i];})
+        canvas.select("g")
+          .selectAll("ellipse")
+          .data(zonesStates[0])
+          .enter()
+          .append("ellipse")
+          .attr("cx",function(d,i){return (i+1)*cx;})
+          .attr("cy",600)
+          .attr("rx",25)
+          .attr("ry",25)
+          .attr("fill","green")
+          var xAxisGroup = canvas.append("g")
+                                .attr("transform", "translate(200 ,200)")
+                                .attr("fill","green")
+                                .call(xAxis);
+        function updateRects(index){
+          //canvas.selectAll("#rects").remove();
+          console.log("came here");
+          var temp = canvas
+            .select("g")
+            .selectAll("rect")
+            .data(zonesData[index]);
+            temp.exit().remove();
+
+            temp.enter()
+            .append("rect")
+            .attr("fill",function(d,i){return category20b(i)})
+            temp.transition()
+            .duration(1000)
+            .attr("y",function(d,i){return  baseY-(d/zonesData[index][0]*200)})
+            .attr("height",function(d,i){return  (d/zonesData[index][0]*200)})
+          var temp2 = canvas
+            .select("g")
+            .selectAll("ellipse")
+            .data(zonesStates[index]);
+            temp2.exit().remove();
+            temp2.enter()
+            .append("ellipse")
+            .attr("fill","green")
+            .attr("rx",1)
+            .attr("ry",1)
+            temp2.transition()
+            .duration(500)
+            .attr("cx",function(d,i){return (i+1)*cx;})
+            .attr("cy",600)
+            .attr("rx",25)
+            .attr("ry",25)
+        }
+
+
+    </script>
+  </body>
+
+</html>
