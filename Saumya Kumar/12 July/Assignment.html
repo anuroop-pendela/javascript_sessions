@@ -6,35 +6,35 @@
   <title>Bullet Chart</title>
 <style>
 .bu1, .bu2, .bu3, .bu4 {border:none; padding: 15px 15px; font-size:20;margin-left:60;}
-.b1, .bu1 {fill: green; background-color: green;}
-.b2, .bu2 {fill: yellow; background-color: yellow;}
-.b3, .bu3 {fill: red; background-color: red;}
-.b4, .bu4 {fill: blue; background-color: blue;}
+.b1, .bu1 {fill: #dddddd; background-color: #dddddd;}
+.b2, .bu2 {fill: #514f4f; background-color: #514f4f;}
+.b3, .bu3 {fill: #191919; background-color: #191919;}
+.b4, .bu4 {fill: red; background-color: red;}
 .text{font-size: 30; font-weight: bold;}
 </style>
 </head>
   <body>
     <h1 style="border:double;background-color:black;color:white;text-align:center">Bullet Chart</h1>
     <div id="r1"></div>
-    <button class ="bu1"><b>Last Week Sale</b></button>
-    <button class ="bu2"><b>Last Month Sale</b></button>
+    <button class ="bu1"><b>Last Month Sale</b></button>
+    <button class ="bu2"><b>Last Week Sale</b></button>
     <button class ="bu3"><b>Current Week Sale</b></button>
     <button class ="bu4"><b>Target Sale</b></button>
   </body>
 <html>
 <script>
 var data=[
-  {"region":"A", "value":{"last_week":"250","last_month":"400","current_week": "200","target":"280"}},
-  {"region":"B", "value":{"last_week":"200","last_month":"345","current_week": "220","target":"270"}},
-  {"region":"C", "value":{"last_week":"190","last_month":"430","current_week": "230","target":"290"}},
-  {"region":"D", "value":{"last_week":"210","last_month":"310","current_week": "240","target":"340"}},
-  {"region":"E", "value":{"last_week":"200","last_month":"380","current_week": "245","target":"310"}}
+  {"region":"A", "value":{"last_month":"400","last_week":"330","current_week": "200","target":"360"}},
+  {"region":"B", "value":{"last_month":"380","last_week":"325","current_week": "220","target":"430"}},
+  {"region":"C", "value":{"last_month":"410","last_week":"390","current_week": "230","target":"470"}},
+  {"region":"D", "value":{"last_month":"350","last_week":"310","current_week": "240","target":"330"}},
+  {"region":"E", "value":{"last_month":"370","last_week":"335","current_week": "245","target":"440"}}
 ];
 var max_y=d3.max(data,function(d)
 {
   var max=0;
-  if(max < d.value.last_week) {max = d.value.last_week;}
   if(max < d.value.last_month) {max = d.value.last_month;}
+  if(max < d.value.last_week) {max = d.value.last_week;}
   if(max < d.value.current_week) {max = d.value.current_week;}
   if(max < d.value.target) {return d.value.target;}
   else {return max;}
@@ -63,18 +63,18 @@ var max_y=d3.max(data,function(d)
       .append("rect")
       .attr("class","b1")
       .attr("x", function (d,i){return x(d.region)})
-      .attr("y", function(d){return height-d.value.last_week;})
+      .attr("y", function(d){return height-d.value.last_month;})
       .attr("width", x.bandwidth())
-      .attr("height", function(d){return (d.value.last_week);})
+      .attr("height", function(d){return (d.value.last_month);})
 
       g.selectAll("#r1")
         .data(data)
         .enter()
         .append("rect")
         .attr("class","b2")
-        .attr("x", function (d,i){return x(d.region)+gap})
+        .attr("x", function (d,i){return x(d.region)})
         .attr("y", function(d){return height-d.value.current_week;})
-        .attr("width", x.bandwidth()-2*gap)
+        .attr("width", x.bandwidth())
         .attr("height", function(d) {return d.value.current_week;})
 
         g.selectAll("#r1")
@@ -82,10 +82,10 @@ var max_y=d3.max(data,function(d)
           .enter()
           .append("rect")
           .attr("class","b3")
-          .attr("y", function(d) {return height-d.value.last_month;})
+          .attr("y", function(d) {return height-d.value.last_week;})
           .attr("x", function (d,i){return x(d.region)+2*gap})
           .attr("width",x.bandwidth()-4*gap)
-          .attr("height", function(d) {return d.value.last_month})
+          .attr("height", function(d) {return d.value.last_week})
           g.selectAll("#r1")
             .data(data)
             .enter()
