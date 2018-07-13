@@ -192,8 +192,11 @@ body {
   y.domain([0, d3.max(data, function(d) {
     return d.y;
   })]);
+  
+  console.log(x.domain());
+  console.log(y.domain());
 
-
+	console.log(y(320));
   var g = svg.append("g")
     .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
   //
@@ -218,7 +221,7 @@ body {
     .attr("y", height)
     .attr("width", x.bandwidth())
     .attr("x", function(d) {
-      return x(dated(d.x));
+      return x(dated(d.x))
     })
     .on("mousemove", function(d) {
       tooltip

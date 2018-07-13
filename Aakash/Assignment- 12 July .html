@@ -1,0 +1,220 @@
+<html>
+  <title>Bullet Chart</title>
+  <head>Bullet Chart</head>
+  <body>
+    <div id="add_svg"></div>
+    
+  </body>
+</html>
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+<style>
+  #add_svg
+  {
+    width: 1280;
+    height: 600;
+  }
+  .bars1
+  {
+    fill: orange;
+  }
+  .bars2{
+    fill: grey;
+  }
+  .bars3{
+    fill: yellow;
+  }
+  .bars4{
+    fill: red;
+  }
+  .bars
+  {
+    fill: lightgrey;
+  }
+</style>
+
+<script>
+
+var data=[
+{ "region":"A", "value":{"last_week":"250","last_month":"400","current_week": "200","target":"280"}},
+{ "region":"B", "value":{"last_week":"210","last_month":"345","current_week": "220","target":"270"}},
+{ "region":"C", "value":{"last_week":"190","last_month":"430","current_week": "230","target":"290"}},
+{ "region":"D", "value":{"last_week":"220","last_month":"310","current_week": "240","target":"340"}},
+{ "region":"E", "value":{"last_week":"200","last_month":"380","current_week": "245","target":"310"}}
+]
+
+//  console.log(data[0].value.last_week);
+  var svg= d3.select("#add_svg").append("svg").attr("width",1280).attr("height",600);
+
+//  console.log(data[0].value.last_we)
+  var max_x=0;
+
+  var max_y= d3.max(data,function(d)
+  {
+    max_x++;
+    var max=d.value.last_week;
+    if(max<d.value.last_month)
+    max=d.value.last_month;
+    if(max<d.value.current_week)
+    max=d.value.current_week;
+    if(max<d.value.target)
+    return d.value.target;
+    else {
+      return max;
+    }
+  });
+
+  //console.log(max_y," ",max_x);
+  margin = {
+      top: 20,
+      right: 20,
+      bottom: 30,
+      left: 40
+    },
+  width = 1280 - margin.left - margin.right;
+  height= 600 - margin.top - margin.bottom;
+;
+  gap=10;
+
+  var x= d3.scaleBand().rangeRound([0,width]).padding(.2);
+  x.domain(data.map(function(d) {
+    return (d.region);
+  }));
+//  x.domain([0,]);
+
+
+
+//  console.log("bandwidth "+x.bandwidth());
+
+  var y=d3.scaleLinear().range([height,0]);
+  y.domain([0,max_y]);
+
+
+  var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
+
+
+    g.append("g")
+        .attr("class", "axis--y")
+        .call(d3.axisLeft(y))
+
+
+
+        g.selectAll(".bars")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class","bars")
+        .attr("x",function(d,i)
+          {
+
+            return x(d.region);
+          })
+        .attr("y",function(d)
+          {
+              return margin.top;
+          })
+        .attr("width",x.bandwidth())
+        .attr("height",height-margin.bottom);
+
+// LAST WEEK BARS
+
+  g.selectAll(".bars1")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("class","bars1")
+  .attr("x",function(d,i)
+    {
+
+      return x(d.region);
+    })
+  .attr("y",function(d)
+    {
+        return height-d.value.last_month;
+    })
+  .attr("width",x.bandwidth())
+  .attr("height",function(d)
+      {
+        return d.value.last_month;
+      })
+
+
+
+
+
+
+
+  g.selectAll(".bars2")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("class","bars2")
+  .attr("x",function(d,i)
+    {
+  //    console.log(x(d.region));
+      return x(d.region)+10;
+    })
+  .attr("y",function(d)
+    {
+    //    console.log(height-d.value.last_week);
+        return height-d.value.last_week;
+    })
+  .attr("width",x.bandwidth()-30)
+  .attr("height",function(d)
+      {
+        return d.value.last_week;
+      })
+
+
+      console.log(x.bandwidth());
+
+  g.selectAll("bars3")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("class","bars3")
+  .attr("x",function(d,i)
+    {
+//      console.log(x(d.region));
+      return x(d.region)+25;
+    })
+  .attr("y",function(d)
+    {
+    //    console.log(height-d.value.last_month);
+        return height-d.value.current_week;
+    })
+  .attr("width",x.bandwidth()-60)
+  .attr("height",function(d)
+      {
+        return d.value.current_week;
+      })
+
+
+
+  g.selectAll("bars4")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("class","bars4")
+  .attr("x",function(d,i)
+    {
+//      console.log(x(d.region));
+      return x(d.region)+35;
+    })
+  .attr("y",function(d)
+    {
+//        console.log(height-d.value.last_month);
+        return height-d.value.target;
+    })
+  .attr("width",x.bandwidth()-80)
+  .attr("height",function(d)
+      {
+        return 10;
+      })
+//  .style("fill","blue");
+
+
+</script>
