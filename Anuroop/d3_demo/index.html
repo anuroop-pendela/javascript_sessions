@@ -199,19 +199,19 @@ body {
 	console.log(y(320));
   var g = svg.append("g")
     .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
+  //
+  // var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
 
-
-  g.append("g")
-    .attr("class", "axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
-
-  g.append("g")
-    .attr("class", "axis--y")
-    .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
+  // g.append("g")
+  //   .attr("class", "axis--x")
+  //   .attr("transform", "translate(0," + height + ")")
+  //   .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
+  //
+  // g.append("g")
+  //   .attr("class", "axis--y")
+  //   .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
 
 
   g.selectAll(".bar")
