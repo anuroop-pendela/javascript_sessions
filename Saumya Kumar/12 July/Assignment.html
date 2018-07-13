@@ -1,0 +1,102 @@
+<!DOCKTYPE html>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<html>
+<head>
+  <title>Bullet Chart</title>
+<style>
+.bu1, .bu2, .bu3, .bu4 {border:none; padding: 15px 15px; font-size:20;margin-left:60;}
+.b1, .bu1 {fill: green; background-color: green;}
+.b2, .bu2 {fill: yellow; background-color: yellow;}
+.b3, .bu3 {fill: red; background-color: red;}
+.b4, .bu4 {fill: blue; background-color: blue;}
+.text{font-size: 30; font-weight: bold;}
+</style>
+</head>
+  <body>
+    <h1 style="border:double;background-color:black;color:white;text-align:center">Bullet Chart</h1>
+    <div id="r1"></div>
+    <button class ="bu1"><b>Last Week Sale</b></button>
+    <button class ="bu2"><b>Last Month Sale</b></button>
+    <button class ="bu3"><b>Current Week Sale</b></button>
+    <button class ="bu4"><b>Target Sale</b></button>
+  </body>
+<html>
+<script>
+var data=[
+  {"region":"A", "value":{"last_week":"250","last_month":"400","current_week": "200","target":"280"}},
+  {"region":"B", "value":{"last_week":"200","last_month":"345","current_week": "220","target":"270"}},
+  {"region":"C", "value":{"last_week":"190","last_month":"430","current_week": "230","target":"290"}},
+  {"region":"D", "value":{"last_week":"210","last_month":"310","current_week": "240","target":"340"}},
+  {"region":"E", "value":{"last_week":"200","last_month":"380","current_week": "245","target":"310"}}
+];
+var max_y=d3.max(data,function(d)
+{
+  var max=0;
+  if(max < d.value.last_week) {max = d.value.last_week;}
+  if(max < d.value.last_month) {max = d.value.last_month;}
+  if(max < d.value.current_week) {max = d.value.current_week;}
+  if(max < d.value.target) {return d.value.target;}
+  else {return max;}
+});
+</script>
+<script>
+  var svg = d3.selectAll("#r1").append("svg").attr("width", 1200).attr("height", 580).attr("border","ridge")
+  margin = {
+    top: 20,
+    right: 20,
+    bottom: 30,
+    left: 40},
+  width = 1000 - margin.left - margin.right,
+  height =580 - margin.top - margin.bottom;
+
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.3);
+  x.domain(data.map(function(d) {return (d.region)}));
+  var y = d3.scaleLinear().rangeRound([height, 0]);
+  y.domain([0, d3.max(data, function(d) {return max_y;})]);
+  var g = svg.append("g")
+             .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
+  var gap = 10;
+    g.selectAll("#r1")
+      .data(data)
+      .enter()
+      .append("rect")
+      .attr("class","b1")
+      .attr("x", function (d,i){return x(d.region)})
+      .attr("y", function(d){return height-d.value.last_week;})
+      .attr("width", x.bandwidth())
+      .attr("height", function(d){return (d.value.last_week);})
+
+      g.selectAll("#r1")
+        .data(data)
+        .enter()
+        .append("rect")
+        .attr("class","b2")
+        .attr("x", function (d,i){return x(d.region)+gap})
+        .attr("y", function(d){return height-d.value.current_week;})
+        .attr("width", x.bandwidth()-2*gap)
+        .attr("height", function(d) {return d.value.current_week;})
+
+        g.selectAll("#r1")
+          .data(data)
+          .enter()
+          .append("rect")
+          .attr("class","b3")
+          .attr("y", function(d) {return height-d.value.last_month;})
+          .attr("x", function (d,i){return x(d.region)+2*gap})
+          .attr("width",x.bandwidth()-4*gap)
+          .attr("height", function(d) {return d.value.last_month})
+          g.selectAll("#r1")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class","b4")
+            .attr("x", function (d,i){return x(d.region)+3*gap})
+            .attr("y", function(d) {return height-d.value.target;})
+            .attr("width", x.bandwidth()-6*gap)
+            .attr("height",5)
+
+            g.append("g")
+             .attr("class", "axis--y")
+             .call(d3.axisLeft(y))
+</script>
