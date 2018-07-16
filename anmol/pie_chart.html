@@ -1,0 +1,84 @@
+<html>
+<head>
+    <style>
+.arc text {
+    font: 10px sans-serif;
+    font-weight: bolder;
+    font-size: 20px;
+}
+
+.arc path {
+    stroke: #00000ff;
+}
+
+.title {
+    fill: black;
+    font-weight: bolder;
+    font-size:32px;
+}
+body{
+  background-color:#808080;
+}
+
+</style>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+    <svg width="1200" height="700"></svg>
+    <script>
+
+var svg = d3.select("svg"),
+      width = svg.attr("width"),
+      height = svg.attr("height"),
+      radius = Math.min(width, height) / 2;
+
+var g = svg.append("g")
+           .attr("transform", "translate(" + (width / 2) + "," + height / 2 + ")");
+
+var color = d3.scaleOrdinal(['#ff0000','#ff0099','#ff00ff','#9900ff','#0000ff']);
+
+var pie = d3.pie().value(function(d) {
+        return d.percent;
+    });
+
+var pathArc= d3.arc()
+            .outerRadius(radius - 50)
+             .innerRadius(0);
+console.log(pathArc);
+
+var labelArc = d3.arc()
+              .outerRadius(radius)
+              .innerRadius(radius-30);
+
+var use_data = [{"browser":"chrome","percent":"53.7"},
+           {"browser":"IE/edge","percent":"14.9"},
+           {"browser":"FireFox","percent":"20.4"},
+           {"browser":"Safari","percent":"6.6"},
+           {"browser":"Opera","percent":"4.4"}
+
+];
+var arc = g.selectAll(".arc")
+           .data(pie(use_data))
+           .enter()
+           .append("g")
+           .attr("class", "arc");
+arc.append("path")
+   .attr("d", pathArc)
+   .attr("fill", function(d) { return color(d.data.browser); });
+
+arc.append("text")
+   .attr("transform", function(d) {
+            return "translate("+labelArc.centroid(d)+")";
+    })
+   .text(function(d) { return (d.data.browser)+ "    " +d.data.percent+"%"; });
+console.log(labelArc.centroid(use_data));
+svg.append("g")
+               .attr("transform", "translate(" + (width *2/5) + "," + (height/2) + ")")
+               .append("text")
+               .text("Browser use - Jan 2017")
+               .attr("class", "title")
+    </script>
+</body>
+</html>
