@@ -5,6 +5,7 @@
     font: 10px sans-serif;
     font-weight: bolder;
     font-size: 20px;
+    text-anchor:middle;
 }
 
 .arc path {
@@ -17,16 +18,23 @@
     font-size:32px;
 }
 body{
-  background-color:#808080;
+  background-color:#87cefa;
 }
+h1{
+  font-size: 70px;
 
+}
+svg{
+  background-color: #808080;
+}
 </style>
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 
 <body>
-    <svg width="1200" height="700"></svg>
+  <h1> Pie-Chart <h2>
+    <svg width="1200" height="550"></svg>
     <script>
 
 var svg = d3.select("svg"),
@@ -46,17 +54,17 @@ var pie = d3.pie().value(function(d) {
 var pathArc= d3.arc()
             .outerRadius(radius - 50)
              .innerRadius(0);
-console.log(pathArc);
+
 
 var labelArc = d3.arc()
               .outerRadius(radius)
-              .innerRadius(radius-30);
+              .innerRadius(radius-40);
 
 var use_data = [{"browser":"chrome","percent":"53.7"},
            {"browser":"IE/edge","percent":"14.9"},
            {"browser":"FireFox","percent":"20.4"},
-           {"browser":"Safari","percent":"6.6"},
-           {"browser":"Opera","percent":"4.4"}
+           {"browser":"Safari","percent":"9.6"},
+           {"browser":"Opera","percent":"1.4"}
 
 ];
 var arc = g.selectAll(".arc")
@@ -73,9 +81,9 @@ arc.append("text")
             return "translate("+labelArc.centroid(d)+")";
     })
    .text(function(d) { return (d.data.browser)+ "    " +d.data.percent+"%"; });
-console.log(labelArc.centroid(use_data));
+
 svg.append("g")
-               .attr("transform", "translate(" + (width *2/5) + "," + (height/2) + ")")
+               .attr("transform", "translate(" + (width *37/100) + "," + (height/2) + ")")
                .append("text")
                .text("Browser use - Jan 2017")
                .attr("class", "title")
