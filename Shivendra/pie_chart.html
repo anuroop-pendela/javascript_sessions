@@ -1,0 +1,134 @@
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<!DOCTYPE html>
+<head>
+  <title> Basic Pie Chart</title>
+</head>
+  <body>
+     <h3>Pie Chart</h3>
+     <div id="pie-chart"></div>
+  </body>
+
+<style>
+    body {
+           font-family: 'Open Sans', sans-serif;
+          }
+    #pie-chart {
+              border-style: groove;
+              width: 1000px;
+              height: 600px;
+              }
+
+      .toolTip {
+                pointer-events: none;
+                position: absolute;
+                display: none;
+                min-width: 50px;
+                height: auto;
+                background: none repeat scroll 0 0 #ffffff;
+                padding: 9px 14px 13px 14px;
+                border-radius: 10000px;
+                text-align: left;
+                line-height: 1.3;
+                color: black;
+                box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+                }
+
+      .toolTip:after {
+                content: "";
+                width: 0;
+                height: 0;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                border-top: 12px solid white;
+                position: absolute;
+                bottom: 0px;
+                left: 50%;
+                margin-left: -12px;
+                }
+
+        .toolTip span {
+                  font-weight: 50;
+                  color: green;
+                }
+
+          .arc path {
+            stroke: #fff;
+          }
+
+    </style>
+  </html>
+<script>
+  var dataset = [
+                { label: 'Abulia', count: 100 },
+                { label: 'Betelgeuse', count: 200 },
+                { label: 'Cantaloupe', count: 300 },
+                { label: 'Dijkstra', count: 400 },
+                {  label: 'india', count: 150 },
+                { label: 'pakistan', count: 600 }
+                ];
+
+      var color = d3.scaleOrdinal(d3.schemeCategory20b);
+</script>
+
+<script>
+  var  margin = {
+                  top: 20,
+                  right: 20,
+                  bottom: 30,
+                  left: 40
+                };
+
+
+      width = 1000 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
+      var radius = Math.min(width, height) / 2;
+
+    var arc = d3.arc()
+      .cornerRadius(10)//to make corner smooth.
+      .innerRadius(0)
+      .outerRadius(radius-10);
+
+    var pie = d3.pie()
+                .value(function(d) { return d.count; })
+                .sort(null);
+
+  var svgcontainer = d3.select("#pie-chart")
+                       .append("svg")
+                        .attr("width", 1000)
+                        .attr("height", 600)
+                        .style('background-color','#FFFACD')
+                        .append('g')
+                        .attr('transform', 'translate(' + (width / 2) +   ',' + (height / 2) + ')');
+
+   var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+    var g  = svgcontainer.selectAll('.arc')
+                        .data(pie(dataset))
+                        .enter()
+                        .append('g')
+                        .attr('class', 'arc');
+
+    var path = svgcontainer.selectAll('path')
+                          .data(pie(dataset))
+                          .enter()
+                          .append('path')
+                          .attr('d', arc)
+                          .attr('fill', function(d) {
+                            return color(d.data.label);
+                           })
+                          .on("mousemove", function(d,i) {
+                            d3.select(this).transition().ease(d3.easeElastic).duration(200000).attr("r","10px")
+                            tooltip
+                              .style("left", d3.event.pageX + 20 + "px")
+                              .style("top", d3.event.pageY - 20 + "px")
+                              .style("display", "inline-block")
+                              .html("<b>Label:" + d.data.label + "</b><br />Count:" + d.data.count);
+
+                          })
+                          .on("mouseout", function(d, i) {
+                            d3.select(this).transition().ease(d3.easeLinear).duration(200).attr("r","5px")
+                            tooltip.style("display", "none");
+                          });
+
+</script>
