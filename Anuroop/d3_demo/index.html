@@ -192,23 +192,26 @@ body {
   y.domain([0, d3.max(data, function(d) {
     return d.y;
   })]);
+  
+  console.log(x.domain());
+  console.log(y.domain());
 
-
+	console.log(y(320));
   var g = svg.append("g")
     .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
+  //
+  // var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
-  var tooltip = d3.select("body").append("div").attr("class", "toolTip");
 
 
-
-  g.append("g")
-    .attr("class", "axis--x")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
-
-  g.append("g")
-    .attr("class", "axis--y")
-    .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
+  // g.append("g")
+  //   .attr("class", "axis--x")
+  //   .attr("transform", "translate(0," + height + ")")
+  //   .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%d")));
+  //
+  // g.append("g")
+  //   .attr("class", "axis--y")
+  //   .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format(".0s")))
 
 
   g.selectAll(".bar")
@@ -218,7 +221,7 @@ body {
     .attr("y", height)
     .attr("width", x.bandwidth())
     .attr("x", function(d) {
-      return x(dated(d.x));
+      return x(dated(d.x))
     })
     .on("mousemove", function(d) {
       tooltip
