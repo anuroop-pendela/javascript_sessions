@@ -7,47 +7,46 @@
   <style>
 .bu1, .bu2, .bu3, .bu4, .bu4, .bu5, .bu6 {border:double; padding: 15px 15px; font-size:20;}
    #pc
-   {background-position: center;
-    width: 800;
+   {width: 800;
     height: 550;}
    .arc text
-   {font: 20px sans-serif;}
-   .arc path
-   {stroke: #ffffff;}
+   {font: 30px; font-weight: bold;}
+   /* .arc path
+   {stroke: #ffffff;} */
  </style>
 <body>
   <h1 style="border:double; text-align:center;background-color: lightblue">Pie Chart</h1>
   <div id="pc"></div>
-  <button onclick="myFunction()" class ="bu1" style="background-color:red"><b>India</b></button>
-  <button onclick="myFunction()" class ="bu2" style="background-color:#42e8f4"><b>USA</b></button>
-  <button onclick="myFunction()" class ="bu3" style="background-color:yellow"><b>UK</b></button>
-  <button onclick="myFunction()" class ="bu4" style="background-color:purple"><b>China</b></button>
-  <button onclick="myFunction()" class ="bu5" style="background-color:blue"><b>Russia</b></button>
-  <button onclick="myFunction()" class ="bu6" style="background-color:grey"><b>France</b></button>
+  <button class ="bu1" style="background-color:red"><b>India</b></button>
+  <button class ="bu2" style="background-color:#42e8f4"><b>USA</b></button>
+  <button class ="bu3" style="background-color:yellow"><b>UK</b></button>
+  <button class ="bu4" style="background-color:purple"><b>China</b></button>
+  <button class ="bu5" style="background-color:blue"><b>Russia</b></button>
+  <button class ="bu6" style="background-color:grey"><b>France</b></button>
 </body>
 </html>
 
 <script>
-var pie_width = 800,
-    pie_height = 550,
-    pie_radius = Math.min(pie_width, pie_height) / 2;
+var width = 800,
+    height = 550,
+    rad = Math.min(width, height) / 2;
 
 var svg = d3.select("#pc")
             .append("svg")
-            .attr("width",pie_width)
-            .attr("height",pie_height)
+            .attr("width",width)
+            .attr("height",height)
             .style("border","groove")
             .style("background-color", "lightblue");
 
         svg.append("text")
-           .attr("x", pie_width/2)
+           .attr("x", width/2)
            .attr("y", 20)
            .style("font-size", "20px")
            .style("text-anchor","middle")
            .text("Pollution Index Chart");
 
 var g =  svg.append("g")
-            .attr("transform", "translate(" + pie_width / 2 + "," + pie_height / 2 + ")");
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 var data= [ {x:"India" , Pollution:75.17},
             {x:"USA" , Pollution:32.26},
             {x:"UK" , Pollution:38.45},
@@ -62,12 +61,12 @@ var pie = d3.pie()
              .value(function(d) {return d.Pollution; });
 
 var path = d3.arc()
-             .outerRadius(pie_radius - 30)
+             .outerRadius(rad - 30)
              .innerRadius(0);
 
 var label = d3.arc()
-              .outerRadius(pie_radius - 100)
-              .innerRadius(pie_radius - 100);
+              .outerRadius(rad - 100)
+              .innerRadius(rad - 100);
 
 var arc = g.selectAll(".arc")
            .data(pie(data))
