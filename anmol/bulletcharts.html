@@ -1,0 +1,147 @@
+<html>
+
+<head>
+
+<title>
+
+</title>
+
+</head>
+<body>
+  <button style="background-color:green;width:150px;height:40px;"> Last week sales</button>
+  <button style="background-color:yellow;width:150px;height:40px;"> Last month sales</button>
+  <button style="background-color:blue;width:150px;height:40px;"> Current week sales </button>
+  <button style="background-color:red;width:150px;height:40px;"> Target sales </button>
+</body>
+
+</html>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<style>
+body{
+  font-size:25px;
+  background-color: #D3D3D3;
+
+}
+{
+  color: red
+}
+
+
+
+</style>
+<script>
+var chart = d3.select("body").append("svg").attr("width",1200).attr("height",570)
+             .attr("transform", "translate(" + 120 + "," + -40 + ")");;
+var data=[
+  {"region":"A","last_week":"260","last_month":"237","current_week": "190","target":"245"},
+  {"region":"B","last_week":"170","last_month":"245","current_week": "220","target":"215"},
+  {"region":"C","last_week":"174","last_month":"250","current_week": "230","target":"210"},
+  {"region":"D","last_week":"200","last_month":"225","current_week": "237","target":"250"},
+  {"region":"E","last_week":"210","last_month":"221","current_week": "245","target":"230"}
+]
+var width = 1200;
+var height = 570;
+
+var gap = 25;
+var bottom_y = 500;
+var x1 = d3.scaleBand()
+          .domain(["A", "B", "C", "D", "E", "F"])
+          .rangeRound([0, width]).paddingInner(0.3);
+var x2 = d3.scaleBand()
+          .domain(["A", "B", "C", "D", "E", "F"])
+          .rangeRound([0, width]).paddingInner(0.4);
+var x3 = d3.scaleBand()
+          .domain(["A", "B", "C", "D", "E", "F"])
+          .rangeRound([0, width]).paddingInner(0.5);
+var x4 = d3.scaleBand()
+          .domain(["A", "B", "C", "D", "E", "F"])
+          .rangeRound([0, width]).paddingInner(0.3);
+          // console.log(x1.bandwidth());
+          // console.log(x2.bandwidth());
+          // console.log(x3.bandwidth());
+          // console.log(x4.bandwidth());
+var scale = d3.scaleLinear()
+                            .domain([d3.min(data), d3.max(data)])
+                            .range([height/2, 0]);
+
+var y_axis = d3.axisLeft()
+                          .scale(scale);
+
+              chart.append("g")
+                 .attr("transform", "translate(0,220)")
+                 .call(y_axis);
+
+
+//var y =d3.scaleLinear().domain([d3.min(data,function(d) { return d.target; }),d3.max(data,function(d) { return d.target; })]).range([400,650])
+// var y=d3.scaleLinear()
+//     .domain([d3.min(data.last_week), d3.max(data.last_week)])
+//     .rangeRound([0,700])
+// var x = d3.scale.linear()
+//     .range([0,1000]).padding(0.1)
+
+
+
+var last_month=chart.append("g")
+                        .attr("class","last_month");
+
+                  last_month.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("class","bar1")
+                        .attr("x",function(data,index){
+                          return (x1(data.region))+10  ;
+                        })
+                        .attr("y",function(d,i){return bottom_y-data[i].last_month})
+                        .attr("width",x1.bandwidth())
+                        .attr("height",function(d,i){return data[i].last_month})
+                        .attr("fill","yellow")
+var last_week=chart.append("g")
+                        .attr("class","last_week");
+
+                       last_week.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("class","bar2")
+                        .attr("x",(function(data,index){
+                          return (x1(data.region))+10 +(x1.bandwidth()-x2.bandwidth())/2;
+                        }))
+                        .attr("y",function(d,i){return bottom_y-data[i].last_week})
+                        .attr("width",x2.bandwidth())
+                        .attr("height",function(d,i){return data[i].last_week})
+                        .attr("fill","green")
+
+
+var current_week=chart.append("g")
+                        .attr("class","current_week");
+
+                  current_week.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("class","bar3")
+                        .attr("x",function(data,index){
+                          return (x1(data.region))+10+ (x1.bandwidth()-x3.bandwidth())/2;
+                        })
+                        .attr("y",function(d,i){return bottom_y-data[i].current_week})
+                        .attr("width",x3.bandwidth())
+                        .attr("height",function(d,i){return data[i].current_week})
+                        .attr("fill","blue")
+var target=chart.append("g")
+                        .attr("class","target");
+
+                  target.selectAll("rect")
+                        .data(data)
+                        .enter()
+                        .append("rect")
+                        .attr("class","bar4")
+                        .attr("x",function(data,index){
+                          return (x1(data.region))+10;
+                        })
+                        .attr("y",function(d,i){return bottom_y-data[i].target})
+                        .attr("width",x4.bandwidth())
+                        .attr("height",5)
+                        .attr("fill","red")
+
+</script>

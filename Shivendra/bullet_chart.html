@@ -1,0 +1,137 @@
+<html>
+ <head>
+
+ <style>
+
+ </style>
+ </head>
+<dody>
+   <div id="bullet"></div>
+
+</body>
+
+</html>
+
+<script src= "https://d3js.org/d3.v5.min.js" ></script>
+
+<script>
+var svgcontainer=d3.select("#bullet")
+                  .append("svg")
+                  .attr("width",1000)
+                  .attr("height",600)
+                  .style("border", "1px solid"),
+                  margin = {
+                    top: 20,
+                    right: 20,
+                    bottom: 30,
+                    left: 40
+                  };
+                 //  //.style("background-color","lightblue");
+                var  width = 1000 - margin.left - margin.right,
+                     height = 600 - margin.top - margin.bottom,
+                     gap=20,width=50;
+
+
+
+        var data=[
+          {"region":"A","last_week":300,"last_month":160,"current_week": 180,"target":150},
+          {"region":"B","last_week":230,"last_month":235,"current_week": 250,"target":250},
+          {"region":"C","last_week":340,"last_month":340,"current_week": 340,"target":350},
+          {"region":"D","last_week":245,"last_month":259,"current_week": 327,"target":200},
+          {"region":"E","last_week":335,"last_month":300,"current_week": 245,"target":300}
+        ];
+
+
+
+    values = [];
+
+for (i in data) {
+  for (j in data[i]) {
+    if (parseFloat(data[i][j]) > 0) {
+      values.push(parseFloat(data[i][j]));
+    }
+  }
+}
+
+var max = Math.max.apply(null, values);
+var y=d3.scaleLinear().rangeRound([height,0]);
+var x=d3.scaleBand().rangeRound([0,width]).padding(0.1);
+
+//console.log(max);
+
+var g = svgcontainer.append("g")
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+y.domain([0, max]);
+
+
+g.append("g")
+  .attr("class", "axis axis--y")
+  .call(d3.axisLeft(y).ticks(5).tickFormat(d3.format("0")));
+
+
+</script>
+
+<script>
+
+
+     var target1=svgcontainer.append("g")
+                             .attr("class","target");
+
+                 target1.selectAll("rect")
+                       .data(data)
+                       .enter()
+                       .append("rect")
+                       .attr("calss","bar1")
+                       .attr("x",function(d,i){return (width+gap)*i+100})
+                       .attr("y",function(d,i){return height-data[i].target})
+                       .attr("width",width)
+                       .attr("height",function(d,i){return data[i].target/30})
+                       .attr("fill","black");
+
+
+     var cw=svgcontainer.append("g")
+                         .attr("class","current_week");
+
+                       cw.selectAll("rect")
+                         .data(data)
+                         .enter()
+                         .append("rect")
+                         .attr("calss","bar2")
+                         .attr("x",function(d,i){return (width+gap)*i+100})
+                         .attr("y",function(d,i){return height-data[i].current_week})
+                         .attr("width",width-10)
+                         .attr("height",function(d,i){return data[i].current_week})
+                         .attr("fill","yellow")
+                        .attr("opacity",.5)
+
+ var lm=svgcontainer.append("g")
+                    .attr("class","last_month");
+
+                  lm.selectAll("rect")
+                         .data(data)
+                         .enter()
+                         .append("rect")
+                         .attr("calss","bar3")
+                         .attr("x",function(d,i){return (width+gap)*i+100})
+                         .attr("y",function(d,i){return height-data[i].last_month})
+                         .attr("width",width-20)
+                         .attr("height",function(d,i){return data[i].last_month})
+                         .attr("fill","red")
+                         .attr("opacity",.5)
+
+     var lw=svgcontainer.append("g")
+                        .attr("class","last_week");
+
+                      lw.selectAll("rect")
+                         .data(data)
+                         .enter()
+                         .append("rect")
+                         .attr("calss","bar4")
+                         .attr("x",function(d,i){return (width+gap)*i+100})
+                         .attr("y",function(d,i){return height-data[i].last_week})
+                         .attr("width",width-30)
+                         .attr("height",function(d,i){return data[i].last_week})
+                         .attr("fill","purple");
+
+</script>
