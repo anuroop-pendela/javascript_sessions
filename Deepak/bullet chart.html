@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<html>
+<head> <title> bullet chart assign </title></head>
+<body>
+<h1>Bullet Chart</h1>
+<h3 style="color:black; text-align:center ; background-color:red  "> Target </h3>
+<h3 style="color:black;text-align:center;background-color:yellow;"> last week </h3>
+<h3 style="color:black;text-align:center;background-color:green;"> last month </h3>
+<h3 style=color:black;text-align:center;background-color:silver;> current week</h3>
+<div id="bul" ></div>
+</body>
+</html>
+<style>
+   h1{
+   color:yellow;
+   background-color: blue;
+   text-align: center;
+   font-style: 'open sans', sans-serif;
+   }
+   .axis--y path {
+     display: none;
+   }
+   .bar
+   {
+     fill: yellow;
+   }
+   .bar1
+   {
+     fill: green;
+   }
+   .bar2
+   {
+     fill: silver;
+   }
+   .bar3
+   {
+     fill: red;
+   }
+
+   </style>
+<script>
+var data=[
+  {"region":"A","last":"250","last_month":"237","current_week": "240","target":"245"},
+  {"region":"B","last":"230","last_month":"245","current_week": "220","target":"235"},
+  {"region":"C","last":"240","last_month":"250","current_week": "230","target":"225"},
+  {"region":"D","last":"245","last_month":"235","current_week": "237","target":"240"},
+  {"region":"E","last":"235","last_month":"250","current_week": "245","target":"242"}
+];
+//console.log(data[0].last);
+var bullet = d3.select("#bul").append("svg").attr("width",1000).attr("height",600);
+margin = {
+  top: 20,
+  right: 20,
+  bottom: 30,
+  left: 40
+},
+width = 1000 - margin.left - margin.right,
+height = 600 - margin.top - margin.bottom;
+
+
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.5);
+x.domain(data.map(function(d) {
+  return (d.region);
+}));
+//console.log(x.domain());
+
+var  y = d3.scaleLinear().rangeRound([height,0]);
+y.domain([0,500]);
+
+  var g = bullet.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    // g.append("g")
+    //   .attr("class", "axis axis--x")
+    //   .attr("transform", "translate(0," + height + ")")
+       // g.append("g")
+       //  .attr("class", "axis axis--y")
+       //  .call(d3.axisLeft(y))
+       g.append("g")
+         .attr("class", "axis axis--y")
+         .call(d3.axisLeft(y).ticks(10).tickFormat(d3.format("0")));
+
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class","bar")
+    .attr("y", function(data)
+          {
+
+            return height-data.last;
+          })
+    .attr("width", x.bandwidth())
+    .attr("x", function(data) {
+        return x(data.region);
+        })
+    .attr("height",function(data)
+          {
+
+            return data.last;
+          });
+
+          g.selectAll(".bar1")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("class","bar1")
+            .attr("y", function(data)
+                  {
+
+                    return height-data.last_month;
+                  })
+            .attr("width", x.bandwidth()-20)
+            .attr("x", function(data) {
+                return x(data.region)+10;
+                })
+            .attr("height",function(data)
+                  {
+
+                    return data.last_month;
+                  });
+
+                  g.selectAll(".bar2")
+                    .data(data)
+                    .enter()
+                    .append("rect")
+                    .attr("class","bar2")
+                    .attr("y", function(data)
+                          {
+
+                            return height-data.current_week;
+                          })
+                    .attr("width", x.bandwidth()-40)
+                    .attr("x", function(data) {
+                        return x(data.region)+20;
+                        })
+                    .attr("height",function(data)
+                          {
+
+                            return data.current_week;
+                          });
+
+                          g.selectAll(".bar3")
+                            .data(data)
+                            .enter()
+                            .append("rect")
+                            .attr("class","bar3")
+                            .attr("y", function(data)
+                                  {
+
+                                    return height-data.target;
+                                  })
+                            .attr("width", x.bandwidth()-60)
+                            .attr("x", function(data) {
+                                return x(data.region)+30;
+                                })
+                            .attr("height",7);
+console.log(x.bandwidth());
+</script>

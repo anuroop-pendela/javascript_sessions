@@ -18,15 +18,21 @@
     <h1>population vs pollution</h1>
     <h3 style= "color:steelblue;text-align: center">Population<h3>
     <h3 style= "color:black;text-align: center">Pollution<h3>
-    <div id="rec" style="border:groove"></div>
+    <div id="rec" style="border:groove">
+      <svg>
+        <rect style="fill:steelblue" x="30" y="30" width="30" height="30"></rect>
+        <circle style="fill:black" r="15" cx= "45" cy="85"></circle>
+        <text style="fill:steelblue;"  x="65" y="45" > :population </text>
+        <text class="text" style= "color:black;font-family:"open-sans",sans-serif;" x="65" y="85">:pollution</text>
+      </svg>
+    </div>
     <div id="cir" ></div>
-
-  </body>
+</body>
   </html>
   <script>
-  var q = d3.select("#rec").append("svg").attr("width",1300).attr("height",490);
+  var q = d3.select("#rec").append("svg").attr("width",1300).attr("height",700);
 
-  var gap = 150;
+  var gap = 200;
   var bottom_axis = 550;
   var city =
   [ {"Population": 103,"Pollution": 9},
@@ -36,6 +42,7 @@
     {"Population": 504,"Pollution": 29},
     {"Population": 407,"Pollution": 18},
     {"Population": 100,"Pollution": 30},];
+    console.log("city.population");
     </script>
     <script>
                  q.selectAll("rec")
@@ -58,5 +65,3 @@
                   .attr("cx",function(city,index){return (gap)*index+20;})
                   .attr("cy",function(city){return bottom_axis-city.Population;})
     </script>
-    <script>
-    
