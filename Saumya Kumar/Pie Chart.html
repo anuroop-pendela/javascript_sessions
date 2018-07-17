@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<html>
+  <title>Pie Chart</title>
+  <style>
+.bu1, .bu2, .bu3, .bu4, .bu4, .bu5, .bu6 {border:double; padding: 15px 15px; font-size:20;}
+   #pc
+   {width: 800;
+    height: 550;}
+   .arc text
+   {font: 30px; font-weight: bold;}
+   /* .arc path
+   {stroke: #ffffff;} */
+ </style>
+<body>
+  <h1 style="border:double; text-align:center;background-color: lightblue">Pie Chart</h1>
+  <div id="pc"></div>
+  <button class ="bu1" style="background-color:red"><b>India</b></button>
+  <button class ="bu2" style="background-color:#42e8f4"><b>USA</b></button>
+  <button class ="bu3" style="background-color:yellow"><b>UK</b></button>
+  <button class ="bu4" style="background-color:purple"><b>China</b></button>
+  <button class ="bu5" style="background-color:blue"><b>Russia</b></button>
+  <button class ="bu6" style="background-color:grey"><b>France</b></button>
+</body>
+</html>
+
+<script>
+var width = 800,
+    height = 550,
+    rad = Math.min(width, height) / 2;
+
+var svg = d3.select("#pc")
+            .append("svg")
+            .attr("width",width)
+            .attr("height",height)
+            .style("border","groove")
+            .style("background-color", "lightblue");
+
+        svg.append("text")
+           .attr("x", width/2)
+           .attr("y", 20)
+           .style("font-size", "20px")
+           .style("text-anchor","middle")
+           .text("Pollution Index Chart");
+
+var g =  svg.append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+var data= [ {x:"India" , Pollution:75.17},
+            {x:"USA" , Pollution:32.26},
+            {x:"UK" , Pollution:38.45},
+            {x:"China" , Pollution:83.08},
+            {x:"Russia" , Pollution:63.37},
+            {x:"France" , Pollution:41.04} ];
+
+var color = ["red", "#42e8f4", "yellow", "purple", "blue", "grey"];
+
+var pie = d3.pie()
+             .sort(null)
+             .value(function(d) {return d.Pollution; });
+
+var path = d3.arc()
+             .outerRadius(rad - 30)
+             .innerRadius(0);
+
+var label = d3.arc()
+              .outerRadius(rad - 100)
+              .innerRadius(rad - 100);
+
+var arc = g.selectAll(".arc")
+           .data(pie(data))
+           .enter()
+           .append("g")
+           .attr("class", "arc");
+
+         arc.append("path")
+            .attr("d", path)
+            .style("fill", function(d,i) { return color[i];});
+
+        arc.append("text")
+           .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+           .text(function(d) { return d.data.Pollution; });
+</script>

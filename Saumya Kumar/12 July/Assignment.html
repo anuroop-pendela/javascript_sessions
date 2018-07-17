@@ -8,8 +8,8 @@
 .bu1, .bu2, .bu3, .bu4 {border:none; padding: 15px 15px; font-size:20;margin-left:60;}
 .b1, .bu1 {fill: #dddddd; background-color: #dddddd;}
 .b2, .bu2 {fill: #514f4f; background-color: #514f4f;}
-.b3, .bu3 {fill: #191919; background-color: #191919;}
-.b4, .bu4 {fill: red; background-color: red;}
+.b3, .bu3 {fill: #191919; background-color: #191919; color: white;}
+.b4, .bu4 {fill: red; background-color: red; color: white;}
 .text{font-size: 30; font-weight: bold;}
 </style>
 </head>
@@ -50,14 +50,14 @@ var max_y=d3.max(data,function(d)
   width = 1000 - margin.left - margin.right,
   height =580 - margin.top - margin.bottom;
 
-  var x = d3.scaleBand().rangeRound([0, width]).padding(0.3);
+  var x = d3.scaleBand().rangeRound([0, width]).padding(0.2);
   x.domain(data.map(function(d) {return (d.region)}));
   var y = d3.scaleLinear().rangeRound([height, 0]);
   y.domain([0, d3.max(data, function(d) {return max_y;})]);
   var g = svg.append("g")
              .attr("transform", "translate(" + margin.left+ "," + margin.top +")");
   var gap = 10;
-    g.selectAll("#r1")
+    g.selectAll(".b1")
       .data(data)
       .enter()
       .append("rect")
@@ -67,7 +67,7 @@ var max_y=d3.max(data,function(d)
       .attr("width", x.bandwidth())
       .attr("height", function(d){return (d.value.last_month);})
 
-      g.selectAll("#r1")
+      g.selectAll(".b2")
         .data(data)
         .enter()
         .append("rect")
@@ -77,7 +77,7 @@ var max_y=d3.max(data,function(d)
         .attr("width", x.bandwidth())
         .attr("height", function(d) {return d.value.current_week;})
 
-        g.selectAll("#r1")
+        g.selectAll(".b3")
           .data(data)
           .enter()
           .append("rect")
@@ -86,7 +86,8 @@ var max_y=d3.max(data,function(d)
           .attr("x", function (d,i){return x(d.region)+2*gap})
           .attr("width",x.bandwidth()-4*gap)
           .attr("height", function(d) {return d.value.last_week})
-          g.selectAll("#r1")
+
+          g.selectAll(".b4")
             .data(data)
             .enter()
             .append("rect")
