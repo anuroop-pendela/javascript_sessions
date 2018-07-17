@@ -20,8 +20,8 @@
   <button class ="bu1" style="background-color:red"><b>India</b></button>
   <button class ="bu2" style="background-color:#42e8f4"><b>USA</b></button>
   <button class ="bu3" style="background-color:yellow"><b>UK</b></button>
-  <button class ="bu4" style="background-color:purple"><b>China</b></button>
-  <button class ="bu5" style="background-color:blue"><b>Russia</b></button>
+  <button class ="bu4" style="background-color:white"><b>China</b></button>
+  <button class ="bu5" style="background-color:steelblue"><b>Russia</b></button>
   <button class ="bu6" style="background-color:grey"><b>France</b></button>
 </body>
 </html>
@@ -54,10 +54,10 @@ var data= [ {x:"India" , Pollution:75.17},
             {x:"Russia" , Pollution:63.37},
             {x:"France" , Pollution:41.04} ];
 
-var color = ["red", "#42e8f4", "yellow", "purple", "blue", "grey"];
+var color = ["red", "#42e8f4", "yellow", "white", "steelblue", "grey"];
 
 var pie = d3.pie()
-             .sort(null)
+             // .sort(null)
              .value(function(d) {return d.Pollution; });
 
 var path = d3.arc()
@@ -80,5 +80,5 @@ var arc = g.selectAll(".arc")
 
         arc.append("text")
            .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-           .text(function(d) { return d.data.Pollution; });
+           .text(function(d) { return d.data.Pollution; })
 </script>
