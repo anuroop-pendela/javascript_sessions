@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<title>
+  PIE CHART
+</title>
+<body>
+    <h1>Pie Chart</h1>
+    <div id="pie_svg" width="1000" height="600" style="border:1px solid black; background-color: lightgrey"></div>
+    </div>
+</body>
+</html>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<style>
+path {
+stroke: none;
+fill: orange;
+}
+
+</style>
+<!-- ADDING SCRIPT FOR PIE CHART -->
+<script>
+
+var data=[{  city:"Deesa",  value:30},
+          {  city:"Patan"  ,  value:20},
+          {  city:"Ahmedabad",  value:15},
+          {  city:"Bhabhar",  value:35},
+          {  city:"BHakhasar",  value:50}],
+      width= 1280,
+      height=600,
+      radius=Math.min(width,height)/2,
+     pie_colors = ["#f44823", "#f41921", "#f4f141", "#46fa62", "#56f4d9", "#aab1f4", "#f441d6"],
+      svg= d3.select("#pie_svg").append("svg").attr("width",width).attr("height",height).append("g").attr("transform","translate("+width/2+","+height/2+")"),
+      arc= d3.arc().innerRadius(0).outerRadius(radius-10),
+      label_arc=d3.arc().innerRadius(radius-40).outerRadius(radius-10),
+      pie=d3.pie().value(function(d)
+                          {
+                            return d.value;
+                          })(data),
+      g=d3.select('g')
+          .selectAll('path')
+          .data(pie)
+          .enter()
+          .append('path')
+          .attr('d',arc)
+          .style("fill",function(d,i){
+                        return pie_colors[i];
+                      }
+                    )
+//Add labels, using .centroid() to position
+    d3.select('g')
+  	.selectAll('text')
+  	.data(pie)
+  	.enter()
+  	.append('text')
+  	.each(function(d) {
+      //  var x= document.createElement("input");
+       // x.appendChild(d.data.value);
+      //  button.value=d.data.value;
+  		  var centroid = label_arc.centroid(d);
+  		  d3.select(this)
+  			.attr('x', centroid[0])
+  			.attr('y', centroid[1])
+  			.text(d.data.value)
+      	});
+</script>
